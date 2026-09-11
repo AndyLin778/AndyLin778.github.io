@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="我的个人网站 - 欢迎了解我的经历与作品">
+  <title>我的个人网站</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 导航栏 -->
+  <header class="navbar">
+    <nav class="nav-container">
+      <a href="#home" class="nav-logo">My&nbsp;Page</a>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home" class="nav-link active">首页</a></li>
+        <li><a href="#about" class="nav-link">关于</a></li>
+        <li><a href="#projects" class="nav-link">项目</a></li>
+        <li><a href="#contact" class="nav-link">联系</a></li>
+      </ul>
+      <button class="nav-toggle" id="navToggle" aria-label="切换导航菜单">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 首页 / 个人简介 -->
+    <section id="home" class="hero">
+      <div class="avatar" aria-label="头像占位">
+        <span>👤</span>
+      </div>
+      <h1>你好，我是 <span class="highlight">你的名字</span></h1>
+      <p class="hero-subtitle">一名热爱创造的前端开发者 / 设计师 / 创作者</p>
+      <p class="hero-desc">
+        这里是我的个人主页，用来展示我的经历、作品和联系方式。
+        欢迎随时浏览，也期待与你交流！
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn btn-primary">查看我的项目</a>
+        <a href="#contact" class="btn btn-outline">联系我</a>
+      </div>
+    </section>
+
+    <!-- 关于 -->
+    <section id="about" class="section">
+      <div class="section-container">
+        <h2 class="section-title">关于我</h2>
+        <p class="section-subtitle">简单介绍一下自己</p>
+        <div class="about-card">
+          <p>
+            你好！我是一名对技术充满热情的学习者，喜欢把想法变成看得见的产品。
+            平时主要研究 Web 开发，也喜欢摄影、写作和折腾各种有趣的小工具。
+          </p>
+          <ul class="about-list">
+            <li>🎨 喜欢简洁、优雅的设计</li>
+            <li>💻 热爱用代码解决问题</li>
+            <li>🚀 持续学习，保持好奇</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 项目展示 -->
+    <section id="projects" class="section section-alt">
+      <div class="section-container">
+        <h2 class="section-title">我的项目</h2>
+        <p class="section-subtitle">一些我最近在做的事情</p>
+        <div class="project-grid">
+          <article class="project-card">
+            <div class="project-thumb">📁</div>
+            <h3>项目一：个人博客</h3>
+            <p>一个支持 Markdown 写作的轻量级博客系统，用于记录学习笔记与生活随笔。</p>
+            <span class="project-tag">Web 开发</span>
+          </article>
+          <article class="project-card">
+            <div class="project-thumb">🛠</div>
+            <h3>项目二：效率工具</h3>
+            <p>帮助日常任务自动化的命令行小工具，支持自定义规则与定时提醒。</p>
+            <span class="project-tag">工具 / 自动化</span>
+          </article>
+          <article class="project-card">
+            <div class="project-thumb">📊</div>
+            <h3>项目三：数据可视化</h3>
+            <p>将复杂数据转化为直观图表的展示页面，支持多种图表类型与交互。</p>
+            <span class="project-tag">数据可视化</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- 联系 -->
+    <section id="contact" class="section">
+      <div class="section-container">
+        <h2 class="section-title">联系我</h2>
+        <p class="section-subtitle">欢迎通过以下方式找到我</p>
+        <div class="contact-links">
+          <a href="mailto:yourname@example.com" class="contact-item">✉️ yourname@example.com</a>
+          <a href="https://github.com/yourname" target="_blank" rel="noopener" class="contact-item">🐙 GitHub</a>
+          <a href="#" class="contact-item">💬 微信 / 微博</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 底部版权 -->
+  <footer class="footer">
+    <p>© <span id="year">2026</span> 你的名字 · 用 ♥ 制作</p>
+  </footer>
+
+  <!-- 欢迎弹窗 -->
+  <div class="welcome-modal" id="welcomeModal" role="dialog" aria-live="polite">
+    <div class="modal-content">
+      <p>👋 欢迎来到我的个人网站！</p>
+      <button class="modal-close" id="modalClose">知道了</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
