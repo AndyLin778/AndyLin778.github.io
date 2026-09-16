@@ -132,42 +132,19 @@ AI 给出回答
 
 <p>于是产生了最初的想法：</p>
 
-<pre data-lang="markdown"><code>            人类
-
+<pre><code>            人类
               |
-
-              |
-
         AI Planner
-
       负责思考和规划
-
               |
-
-              |
-
           Task Plan
-
               |
-
-              |
-
        AI Executor
-
        负责执行任务
-
               |
-
-              |
-
         Result Report
-
               |
-
-              |
-
        AI Reviewer
-
        负责检查和改进</code></pre>
 
 <p>在这个体系中：</p>
@@ -192,34 +169,20 @@ AI 给出回答
 
 <p>它还包含：</p>
 
-<pre data-lang="diff"><code>程序本体
-
+<pre><code>程序本体
 +
-
 配置文件
-
 +
-
 用户身份
-
 +
-
 缓存数据
-
 +
-
 数据库
-
 +
-
 插件
-
 +
-
 登录状态
-
 +
-
 系统注册信息</code></pre>
 
 <p>如果两个 AI 客户端直接共用这些内容，就会产生各种问题：</p>
@@ -254,11 +217,11 @@ AI 给出回答
 
 <p>官方 GPT：</p>
 
-<pre data-lang="yaml"><code>C:\Users\User\.codex</code></pre>
+<pre><code>C:\Users\User\.codex</code></pre>
 
 <p>DeepSeek：</p>
 
-<pre data-lang="yaml"><code>C:\Users\User\.codex-deepseek</code></pre>
+<pre><code>C:\Users\User\.codex-deepseek</code></pre>
 
 <p>两个目录分别保存：</p>
 
@@ -281,16 +244,11 @@ AI 给出回答
 <p>因此需要进一步建立：</p>
 
 <pre><code>Official Profile
-
 ↓
-
 OpenAI 数据环境
 
-
 DeepSeek Profile
-
 ↓
-
 DeepSeek 数据环境</code></pre>
 
 <p>避免两个实例互相读取历史状态。</p>
@@ -318,7 +276,6 @@ DeepSeek 数据环境</code></pre>
 <p>最终效果：</p>
 
 <pre><code>ChatGPT
-
 🐟 DeepSeek Codex</code></pre>
 
 <p>成为两个独立的软件入口。</p>
@@ -366,29 +323,17 @@ DeepSeek 数据环境</code></pre>
 <p>例如：</p>
 
 <pre><code>用户提出目标
-
 ↓
-
 Planner Agent
-
 分析任务
-
 ↓
-
 Executor Agent
-
 执行任务
-
 ↓
-
 Reviewer Agent
-
 检查结果
-
 ↓
-
 Memory Agent
-
 保存经验</code></pre>
 
 <p>最终形成一个属于个人的 AI 工作系统。</p>
@@ -438,17 +383,11 @@ Memory Agent
 <p>而是：</p>
 
 <pre><code>人
-
 ↓
-
 智能系统
-
 ↓
-
 多个 AI Agent
-
 ↓
-
 完成复杂目标</code></pre>
 
 <p>Dual-Agent-Harness 是我迈出的第一步。</p>
@@ -456,6 +395,10 @@ Memory Agent
 <p>它不是一个终点。</p>
 
 <p>而是建立个人 AI 工作系统的开始。</p>
+
+<hr>
+
+<p>代码、配置模板和踩坑记录都在这里：<a href="https://github.com/AndyLin778/domestic-codex" target="_blank" rel="noopener">github.com/AndyLin778/domestic-codex</a></p>
 <!-- ARTICLE:END -->
         </div>
 

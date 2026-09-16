@@ -82,43 +82,20 @@ AI 给出回答
 
 于是产生了最初的想法：
 
-```markdown
+```
             人类
-
               |
-
-              |
-
         AI Planner
-
       负责思考和规划
-
               |
-
-              |
-
           Task Plan
-
               |
-
-              |
-
        AI Executor
-
        负责执行任务
-
               |
-
-              |
-
         Result Report
-
               |
-
-              |
-
        AI Reviewer
-
        负责检查和改进
 ```
 
@@ -144,35 +121,21 @@ DeepSeek 更像一个工程执行者。
 
 它还包含：
 
-```diff
+```
 程序本体
-
 +
-
 配置文件
-
 +
-
 用户身份
-
 +
-
 缓存数据
-
 +
-
 数据库
-
 +
-
 插件
-
 +
-
 登录状态
-
 +
-
 系统注册信息
 ```
 
@@ -214,13 +177,13 @@ CODEX_HOME
 
 官方 GPT：
 
-```yaml
+```
 C:\Users\User\.codex
 ```
 
 DeepSeek：
 
-```yaml
+```
 C:\Users\User\.codex-deepseek
 ```
 
@@ -252,16 +215,11 @@ C:\Users\User\.codex-deepseek
 
 ```
 Official Profile
-
 ↓
-
 OpenAI 数据环境
 
-
 DeepSeek Profile
-
 ↓
-
 DeepSeek 数据环境
 ```
 
@@ -293,7 +251,6 @@ AppUserModelID
 
 ```
 ChatGPT
-
 🐟 DeepSeek Codex
 ```
 
@@ -349,29 +306,17 @@ Dual-Agent-Harness 目前只是一个起点。
 
 ```
 用户提出目标
-
 ↓
-
 Planner Agent
-
 分析任务
-
 ↓
-
 Executor Agent
-
 执行任务
-
 ↓
-
 Reviewer Agent
-
 检查结果
-
 ↓
-
 Memory Agent
-
 保存经验
 ```
 
@@ -426,17 +371,11 @@ AI 如何成为一个真正属于自己的工具。
 
 ```
 人
-
 ↓
-
 智能系统
-
 ↓
-
 多个 AI Agent
-
 ↓
-
 完成复杂目标
 ```
 
@@ -445,3 +384,7 @@ Dual-Agent-Harness 是我迈出的第一步。
 它不是一个终点。
 
 而是建立个人 AI 工作系统的开始。
+
+---
+
+代码、配置模板和踩坑记录都在这里：https://github.com/AndyLin778/domestic-codex
