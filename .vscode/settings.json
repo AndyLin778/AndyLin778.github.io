@@ -1,0 +1,71 @@
+{
+  // ============================================================
+  // 个人网站（纯静态 HTML + CSS + JS）的编辑器设置
+  // 说明：本文件用的是 JSONC 格式，可以写注释，VS Code 不会报错。
+  // ============================================================
+
+  // ----- 缩进：4 个空格的文件会被自动识别，其余统一 2 个空格 -----
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.detectIndentation": false,
+
+  // ----- 阅读体验：中文内容较多，开启自动换行 + 100 列参考线 -----
+  "editor.wordWrap": "on",
+  "editor.rulers": [100],
+  "editor.renderWhitespace": "boundary",
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": "active",
+  "editor.linkedEditing": true,
+  "editor.minimap.enabled": false,
+
+  // ----- 保存时自动清理：统一编码为 UTF-8、行尾为 LF、去掉多余空格 -----
+  "files.encoding": "utf8",
+  "files.eol": "\n",
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  // 自动保存：默认关闭，按 Ctrl + S 手动保存（保存时会自动格式化并清理行尾空格）
+  "files.autoSave": "off",
+
+  // ----- 格式化：使用 VS Code 自带的 HTML/CSS/JS 格式化器，无需安装额外扩展 -----
+  "editor.formatOnSave": true,
+
+  // ----- HTML / CSS / JS 语言专属设置 -----
+  "[html]": {
+    "editor.defaultFormatter": "vscode.html-language-features",
+    "editor.tabSize": 2
+  },
+  "[css]": {
+    "editor.defaultFormatter": "vscode.css-language-features",
+    "editor.tabSize": 2
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.tabSize": 2
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[markdown]": {
+    "editor.tabSize": 2,
+    "editor.wordWrap": "on"
+  },
+
+  // ----- 资源管理器：隐藏用不到的噪音（.git 只在命令行里用） -----
+  "files.exclude": {
+    "**/.git": true
+  },
+  "explorer.compactFolders": false,
+
+  // ----- 搜索：不搜二进制/系统目录 -----
+  "search.exclude": {
+    "**/.git": true
+  }
+
+  // ----- 本地预览 -----
+  // 任务用 python -m http.server 8000（见 .vscode/tasks.json）；
+  // 如果以后装了 Live Server 扩展，它默认端口是 5500，可用 Go Live 按钮一键预览。
+}

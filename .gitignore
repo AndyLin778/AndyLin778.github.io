@@ -1,0 +1,15 @@
+# ===== 操作系统 / 编辑器产生的临时文件 =====
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# ===== 本地预览 / 构建产生的临时文件（本项目是纯静态页面，通常用不到） =====
+__pycache__/
+*.log
+*.tmp
+dist/
+node_modules/
+
+# ===== 个人专用的编辑器配置（.vscode/ 与 *.code-workspace 仍然提交，方便换电脑后直接用） =====
+.vscode/*.local.json

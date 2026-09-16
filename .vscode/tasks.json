@@ -1,0 +1,46 @@
+{
+  // 在 VS Code 里按 Ctrl + Shift + B 即可运行“默认构建任务”= 本地预览。
+  // 也可以按 Ctrl + Shift + P，输入 “Run Task” 后手动选择下面任意一个任务。
+  "version": "2.0.0",
+  "tasks": [
+    {
+      // 与 README 中的 python -m http.server 8000 完全一致，
+      // 地址：http://localhost:8000  停止：在终端里按 Ctrl + C
+      "label": "本地预览（python -m http.server 8000）",
+      "type": "shell",
+      "command": "python",
+      "args": ["-m", "http.server", "8000"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": false,
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
+      },
+      "detail": "用 Python 内置服务器托管当前文件夹，最接近真实网站的运行方式",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    },
+    {
+      // 直接用默认浏览器打开 index.html（双击文件的效果）
+      "label": "用默认浏览器打开 index.html",
+      "type": "shell",
+      "command": "Start-Process",
+      "args": ["index.html"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared"
+      },
+      "detail": "不启动服务器，直接用浏览器打开文件（部分浏览器会限制本地脚本）"
+    }
+  ]
+}

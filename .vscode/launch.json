@@ -1,0 +1,31 @@
+{
+  // 按 F5 调试页面。三个配置任选其一（下拉框右上角切换）。
+  // 注意：调试器只负责“打开浏览器 + 挂断点”，本地服务需要先用
+  // Ctrl + Shift + B（.vscode/tasks.json 里的“本地预览”任务）启动。
+  "version": "0.2.0",
+  "configurations": [
+    {
+      // 默认配置：不需要任何服务器，直接以文件方式打开页面，最省事
+      "name": "① Chrome：直接打开 index.html（无需服务器）",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "file": "${workspaceFolder}/index.html"
+    },
+    {
+      // 先按 Ctrl + Shift + B 启动预览，再选这一项
+      "name": "② Chrome：本机服务（http://localhost:8000）",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://localhost:8000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      // 需要先安装并启动 Live Server 扩展（默认端口 5500）
+      "name": "③ Chrome：Live Server（http://127.0.0.1:5500）",
+      "type": "pwa-chrome",
+      "request": "launch",
+      "url": "http://127.0.0.1:5500/index.html",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

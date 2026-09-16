@@ -1,0 +1,14 @@
+{
+  // 双击本文件（或用 VS Code 的“文件 → 打开工作区”）即可打开这个项目。
+  // 具体的编辑器设置、调试、任务分别放在 .vscode/ 下的 settings.json、launch.json、tasks.json。
+  "folders": [
+    {
+      "name": "个人网站（mypage）",
+      "path": "."
+    }
+  ],
+  "settings": {
+    "window.title": "个人网站 · ${activeEditorShort}",
+    "explorer.compactFolders": false
+  }
+}

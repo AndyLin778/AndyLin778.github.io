@@ -1,0 +1,18 @@
+{
+  // 打开这个项目时，VS Code 会提示安装下面这些扩展。全部都是可选的。
+  "recommendations": [
+    // 保存后浏览器自动刷新，写页面的最爱
+    "ritwickdey.LiveServer",
+    // 更强的格式化（装了它可以把 settings.json 里的格式化器换成 Prettier）
+    "esbenp.prettier-vscode",
+    // 在 HTML 里输入 class 时提示 style.css 中已定义的类名
+    "ecmel.vscode-html-css",
+    // 改一个标签时自动改配对的闭合标签
+    "formulahendry.auto-rename-tag",
+    // 英文拼写检查，减少文案里的拼写错误
+    "streetsidesoftware.code-spell-checker",
+    // 编辑 README.md 更方便（目录、预览、快捷键）
+    "yzhang.markdown-all-in-one"
+  ],
+  "unwantedRecommendations": []
+}

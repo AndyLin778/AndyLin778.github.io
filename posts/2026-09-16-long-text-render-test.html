@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="长文本渲染压力测试 - 混合中文、英文、数学公式、表格、代码块与引用的长文页面">
+  <meta name="theme-color" content="#fdfdfd">
+  <title>长文本渲染压力测试 · 你的名字</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/katex/katex.min.css">
+
+  <script>
+    document.documentElement.classList.add("js");
+    try {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.setAttribute("data-reduced", "");
+      }
+    } catch (error) {
+      /* 浏览器不支持 matchMedia 时按正常动效处理 */
+    }
+  </script>
+</head>
+<body class="page-post">
+
+  <a class="skip-link mono" href="#article">跳到正文 ↓</a>
+
+  <!-- 顶部导航 -->
+  <header class="navbar">
+    <div class="shell nav-shell">
+      <a href="../index.html" class="brand">
+        <span class="brand-name">你的名字</span><span class="brand-dot">.</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="页面导航">
+        <a href="../index.html#work" class="nav-link">项目</a>
+        <a href="../index.html#writing" class="nav-link is-active">文章</a>
+        <a href="../index.html#research" class="nav-link">科研</a>
+        <a href="../index.html#games" class="nav-link">游戏</a>
+      </nav>
+
+      <span class="nav-clock mono" id="navClock" aria-hidden="true">LOCAL --:--</span>
+
+      <button class="nav-toggle" id="navToggle" type="button"
+              aria-label="切换导航菜单" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article id="article" class="post">
+      <div class="post-shell">
+
+        <!-- 文章头部：日期 / 标题 / 导语 -->
+        <header class="post-head">
+          <p class="post-meta mono">2026.09.16 · 渲染测试 · 中文 / 英文 / 公式 / 表格 / 代码</p>
+          <h1 class="post-title">长文本渲染压力测试</h1>
+          <p class="post-lede">
+            一篇刻意做长的混合内容文章，用来观察中文、英文、数学公式、表格、代码块和引用
+            在同一个页面上的渲染表现。
+          </p>
+        </header>
+
+        <!-- 正文：内容由 tools/md2html.py 从 Markdown 生成，样式继承 .prose -->
+        <div class="prose">
+<!-- ARTICLE:START -->
+<p>可以，这一页就专门拿来做 <strong>Edge + ChatGPT 长文本渲染压力测试</strong>。我这次故意把内容做得比较长，而且混合普通中文、英文、粗体、斜体、数学公式、表格、代码块、引用、长段落，让你观察几个东西：<strong>输入时是否卡顿、回答流式生成时是否掉帧、滚动时是否卡顿、生成结束后页面是否仍然占用很高、切换标签页再回来有没有明显延迟。</strong></p>
+
+<hr>
+
+<h2>第一部分：连续中文长文本</h2>
+
+<p>如果单纯为了测试浏览器是否卡顿，一个比较好的办法其实不是只看回答生成的速度，因为回答生成速度里面还混杂了网络延迟、服务器流式输出速度以及模型本身生成 token 的速度。真正能够反映 Edge 页面渲染问题的，是回答已经出现很多内容以后，你开始上下快速滚动页面，或者在输入框里面连续打字，观察光标有没有延迟。比如正常情况下，即使页面已经有几万字，现代浏览器处理纯文本一般也不应该出现非常夸张的卡顿。如果只有 ChatGPT 页面卡，而其他网站、视频、PDF、网页应用都比较正常，那么问题往往不在 CPU 总体性能，也不一定在内存容量，而更可能发生在浏览器 GPU 合成、网页脚本、某个扩展程序、硬件加速、页面 DOM 数量、浏览器进程调度或者 ChatGPT 页面本身的状态上。</p>
+
+<p>比如你之前说的一个现象其实很重要：<strong>CPU、内存、磁盘占用都不高，但是操作感觉依然卡。</strong>这种情况并不矛盾，因为任务管理器显示的 CPU 使用率通常是所有核心的平均值。假设你有 16 个逻辑处理器，其中一个核心被某个浏览器线程完全占满，而其他核心基本空闲，那么总体 CPU 可能只有百分之几，但负责页面交互的那个线程已经到了瓶颈。网页尤其明显，因为大量 JavaScript 和布局计算最终仍然存在主线程瓶颈。你看到 8% CPU，并不意味着网页还有 92% 的性能余量。</p>
+
+<p>另一方面，GPU 也存在类似问题。浏览器页面并不是所有工作都会显示成一个明显的“GPU 100%”。Chrome/Edge 使用多个进程，包括 Browser、Renderer、GPU Process、Utility、Network Service 等。某个 renderer 出现长任务时，用户感受到的是鼠标滚动不跟手、文字输入有延迟、菜单弹出慢、窗口拖动偶尔卡一下，但 Windows 任务管理器上所有指标都可能看起来很漂亮。</p>
+
+<p>所以如果现在你发现这一条回答越来越长，但滚动仍然非常流畅，那么我们就得到一个初步信息：<strong>单纯 DOM 数量或者聊天长度可能不是问题。</strong>相反，如果回答增长到某个程度以后开始明显卡，尤其是数学公式、代码块、表格出现后才开始卡，那就值得怀疑页面布局与重新渲染。</p>
+
+<p>下面我会故意加入一些不同类型的内容。</p>
+
+<hr>
+
+<h2>第二部分：长英文文本</h2>
+
+<p>Modern web applications are considerably more complicated than traditional static web pages. A webpage such as ChatGPT is not simply a document consisting of text and images. It behaves more like a desktop application running inside the browser. The browser must maintain application state, receive streaming network responses, update the document structure, perform text layout, calculate line wrapping, render fonts, process user input, handle animations, composite graphical layers, and continuously synchronize all of these operations with the display refresh cycle.</p>
+
+<p>Suppose a monitor is running at 120 Hz. In ideal conditions, the browser has approximately 8.33 milliseconds to prepare each frame. At 60 Hz, the budget is approximately 16.67 milliseconds. If a JavaScript task blocks the main rendering thread for 50 milliseconds, several frames may be missed. The overall CPU utilization could still appear relatively low because only one thread is heavily occupied. Yet to the user, the interface immediately feels sluggish.</p>
+
+<p>This distinction between aggregate utilization and latency is extremely important. Many people diagnose computer performance by looking only at CPU percentage, RAM percentage, GPU percentage, and disk percentage. Those indicators are useful, but they describe throughput and utilization more directly than interaction latency. A system can have enormous unused computational capacity and still feel slow if a latency-sensitive task is waiting on one serialized dependency.</p>
+
+<p>For example, consider a hypothetical system with twelve CPU cores. One browser rendering thread is running at full utilization on a single core while the remaining eleven cores are almost idle. The operating system may display total CPU usage near eight percent. From a throughput perspective, most of the machine is idle. From the perspective of the web page, however, the only thread capable of performing the next required layout operation is completely saturated.</p>
+
+<p>Another possibility is scheduling latency. Windows attempts to distribute workloads across cores according to priority, power policy, efficiency classes, foreground status, and numerous other factors. Modern hybrid CPUs further complicate this by including performance cores and efficiency cores. A workload that frequently migrates between cores, enters and exits low-power states, or receives unfavorable scheduling can produce intermittent latency spikes even when average CPU utilization is low.</p>
+
+<p>Browser extensions can introduce additional complexity. An extension that modifies page content, inspects text, injects scripts, manages passwords, translates pages, blocks advertisements, alters appearance, or monitors network requests may execute repeatedly whenever new content is inserted into the document. A streaming AI response is unusual compared with a conventional webpage because the DOM may be updated dozens or hundreds of times while a single assistant message is being generated.</p>
+
+<p>If an extension performs a complete scan of the page after every update, the computational cost may grow with the size of the conversation. Imagine that each new token triggers an operation proportional to the amount of existing text. The total amount of work can then behave much worse than a simple linear process. The page may feel perfectly normal at the beginning of a conversation and increasingly sluggish as the transcript grows.</p>
+
+<p>That is one reason why testing a fresh conversation against a very long conversation is informative.</p>
+
+<hr>
+
+<h2>第三部分：数学公式渲染测试</h2>
+
+<p>普通文本相对简单，而数学公式往往涉及额外的排版。</p>
+
+<p>先写一些最普通的：</p>
+
+<div class="math-block">
+$$a^2+b^2=c^2.$$
+</div>
+
+<p>再稍微复杂一点：</p>
+
+<div class="math-block">
+$$f(x)=\int_{-\infty}^{+\infty}
+e^{-t^2}
+\cos(xt)\,dt.$$
+</div>
+
+<p>再来一个矩阵：</p>
+
+<div class="math-block">
+$$A=
+\begin{pmatrix}
+a_{11}&amp;a_{12}&amp;a_{13}&amp;a_{14}\\
+a_{21}&amp;a_{22}&amp;a_{23}&amp;a_{24}\\
+a_{31}&amp;a_{32}&amp;a_{33}&amp;a_{34}\\
+a_{41}&amp;a_{42}&amp;a_{43}&amp;a_{44}
+\end{pmatrix}.$$
+</div>
+
+<p>再来一个极限：</p>
+
+<div class="math-block">
+$$\lim_{n\to\infty}
+\left(1+\frac{x}{n}\right)^n=e^x.$$
+</div>
+
+<p>泛函分析一点：</p>
+
+<p>设 \(X,Y\) 为 Banach 空间，\(T:X\rightarrow Y\) 为有界线性算子。如果</p>
+
+<div class="math-block">
+$$\dim \ker(T)&lt;\infty,$$
+</div>
+
+<p>并且</p>
+
+<div class="math-block">
+$$\operatorname{codim}\operatorname{Ran}(T)&lt;\infty,$$
+</div>
+
+<p>同时 \(\operatorname{Ran}(T)\) 是闭的，则称 \(T\) 为 Fredholm 算子，并定义 Fredholm index 为</p>
+
+<div class="math-block">
+$$\operatorname{ind}(T)
+=
+\dim\ker(T)
+-
+\operatorname{codim}\operatorname{Ran}(T).$$
+</div>
+
+<p>再做一块更长的公式：</p>
+
+<div class="math-block">
+$$\begin{aligned}
+\mathcal{F}[f](\xi)
+&amp;=
+\int_{\mathbb R^n}
+f(x)e^{-2\pi i x\cdot \xi}\,dx,\\
+\mathcal{F}^{-1}[g](x)
+&amp;=
+\int_{\mathbb R^n}
+g(\xi)e^{2\pi i x\cdot \xi}\,d\xi,\\
+\widehat{\partial^\alpha f}(\xi)
+&amp;=
+(2\pi i\xi)^\alpha \widehat f(\xi),\\
+\widehat{(-\Delta)^s f}(\xi)
+&amp;=
+(4\pi^2|\xi|^2)^s\widehat f(\xi).
+\end{aligned}$$
+</div>
+
+<p>再增加一个长一点的概率表达：</p>
+
+<div class="math-block">
+$$\mathbb{E}
+\left[
+\left(
+X-\mathbb{E}[X]
+\right)^k
+\right]
+=
+\int_{\mathbb R}
+(x-\mu)^k\,dF_X(x).$$
+</div>
+
+<p>如果 \(k=2\)，得到方差：</p>
+
+<div class="math-block">
+$$\mu_2
+=
+\mathbb E[(X-\mu)^2]
+=
+\sigma^2.$$
+</div>
+
+<p>如果 \(k=3\)，可以构造偏度：</p>
+
+<div class="math-block">
+$$\gamma_1
+=
+\frac{\mathbb E[(X-\mu)^3]}
+{\sigma^3}.$$
+</div>
+
+<p>如果 \(k=4\)，可以构造峰度：</p>
+
+<div class="math-block">
+$$\gamma_2
+=
+\frac{\mathbb E[(X-\mu)^4]}
+{\sigma^4}.$$
+</div>
+
+<p>这实际上与你之前考虑的宏观经济指标问题有一点数学上的对应关系：平均收入、平均消费、平均产出等指标，本质上通常是高度聚合的统计量，而如果两个经济系统具有相同的一阶矩，它们底层分布仍然可能完全不同。例如考虑：</p>
+
+<div class="math-block">
+$$X_1\sim N(\mu,\sigma^2)$$
+</div>
+
+<p>和另一个非高斯随机变量 \(X_2\)，即使</p>
+
+<div class="math-block">
+$$\mathbb E[X_1]=\mathbb E[X_2],
+\qquad
+\operatorname{Var}(X_1)=\operatorname{Var}(X_2),$$
+</div>
+
+<p>也完全不能推出</p>
+
+<div class="math-block">
+$$X_1\overset{d}{=}X_2.$$
+</div>
+
+<p>因为更高阶矩、尾部结构、分位数结构、条件分布以及时间依赖结构都可能不同。</p>
+
+<p>甚至所有矩都相同，在某些情况下也未必唯一确定分布，这就涉及 Hamburger moment problem、Stieltjes moment problem 以及矩确定性问题。</p>
+
+<p>Carleman 条件的一个经典形式是：</p>
+
+<div class="math-block">
+$$\sum_{n=1}^{\infty}
+m_{2n}^{-\frac1{2n}}
+=
+\infty,$$
+</div>
+
+<p>其中</p>
+
+<div class="math-block">
+$$m_{2n}=\mathbb E[X^{2n}].$$
+</div>
+
+<p>满足一定条件时，可以保证概率分布由其矩序列唯一确定。</p>
+
+<p>这一段对于浏览器来说比普通纯文本复杂，因为数学公式通常需要额外排版。</p>
+
+<hr>
+
+<h2>第四部分：表格渲染</h2>
+
+<p>下面故意放一个稍大的表格：</p>
+
+<div class="table-wrap"><table><thead><tr><th>项目</th><th>正常网页</th><th>ChatGPT 长对话</th><th>潜在卡顿来源</th><th>任务管理器是否一定显示</th></tr></thead><tbody><tr><td>HTML 文本</td><td>少量</td><td>大量</td><td>DOM 规模</td><td>不一定</td></tr><tr><td>JavaScript</td><td>较少</td><td>很多</td><td>主线程长任务</td><td>不一定</td></tr><tr><td>网络请求</td><td>一次性</td><td>流式</td><td>SSE/WebSocket 类更新</td><td>通常不明显</td></tr><tr><td>GPU 合成</td><td>简单</td><td>动态变化</td><td>硬件加速问题</td><td>有时</td></tr><tr><td>字体布局</td><td>固定</td><td>持续增长</td><td>文本重新布局</td><td>很难直接看出</td></tr><tr><td>数学公式</td><td>很少</td><td>可能很多</td><td>KaTeX/MathJax 类排版</td><td>不明显</td></tr><tr><td>Markdown</td><td>简单</td><td>大量</td><td>增量解析</td><td>不明显</td></tr><tr><td>扩展脚本</td><td>不一定</td><td>可能反复触发</td><td>DOM 监听器</td><td>通常不明显</td></tr><tr><td>内存</td><td>稳定</td><td>逐渐增加</td><td>页面状态积累</td><td>可以看到</td></tr><tr><td>显存</td><td>较低</td><td>可能增加</td><td>图层缓存</td><td>不一定</td></tr><tr><td>输入响应</td><td>快</td><td>有时变慢</td><td>Main Thread</td><td>CPU 总占用可能仍低</td></tr><tr><td>滚动响应</td><td>快</td><td>有时掉帧</td><td>Compositor/Main Thread</td><td>GPU 总占用可能仍低</td></tr><tr><td>首次加载</td><td>快</td><td>取决于页面</td><td>JS 初始化</td><td>较容易观察</td></tr><tr><td>页面长期打开</td><td>稳定</td><td>可能退化</td><td>内存泄漏或缓存</td><td>有可能</td></tr><tr><td>多标签页</td><td>普通</td><td>多 renderer</td><td>进程竞争</td><td>可以间接看到</td></tr></tbody></table></div>
+
+<p>再稍微增加一些列宽和文字量：</p>
+
+<div class="table-wrap"><table><thead><tr><th>测试场景</th><th>如果非常流畅</th><th>如果明显卡顿</th><th>比较值得怀疑的方向</th></tr></thead><tbody><tr><td>新建 ChatGPT 空白聊天</td><td>说明基础页面正常</td><td>说明浏览器/扩展/GPU 层面问题概率增加</td><td>Edge 设置、扩展、硬件加速</td></tr><tr><td>很长的旧聊天</td><td>长上下文 DOM 不是主要问题</td><td>页面长度相关性增强</td><td>DOM、Markdown、数学渲染</td></tr><tr><td>无痕窗口</td><td>如果变流畅，扩展嫌疑很大</td><td>如果一样卡，则扩展嫌疑下降</td><td>扩展程序</td></tr><tr><td>Chrome 同一页面</td><td>Chrome 快而 Edge 慢</td><td>Edge 独有配置问题明显</td><td>Profile、Flags、扩展</td></tr><tr><td>Edge 新 Profile</td><td>新 Profile 快</td><td>两者都慢</td><td>系统或 Chromium 层面</td></tr><tr><td>关闭硬件加速</td><td>变快</td><td>变慢或没变化</td><td>GPU 驱动 / ANGLE</td></tr><tr><td>开启硬件加速</td><td>变快</td><td>变慢</td><td>GPU 合成路径</td></tr><tr><td>快速滚动此回答</td><td>平滑</td><td>明显顿挫</td><td>页面渲染</td></tr><tr><td>在底部输入长句</td><td>跟手</td><td>字符延迟出现</td><td>主线程</td></tr><tr><td>切到其他标签再回来</td><td>瞬间恢复</td><td>黑屏/卡几秒</td><td>GPU / 标签冻结 / 内存</td></tr></tbody></table></div>
+
+<hr>
+
+<h2>第五部分：代码块</h2>
+
+<p>代码块也是比较适合测试网页排版的内容。</p>
+
+<pre data-lang="python"><code>import time
+import math
+import statistics
+
+def artificial_workload(n: int) -&gt; float:
+    values = []
+    for i in range(1, n + 1):
+        x = math.sin(i) ** 2 + math.cos(i) ** 2
+        values.append(x)
+
+    return statistics.mean(values)
+
+for size in [1000, 10000, 100000]:
+    start = time.perf_counter()
+    result = artificial_workload(size)
+    elapsed = time.perf_counter() - start
+    print(size, result, elapsed)</code></pre>
+
+<p>再放 PowerShell：</p>
+
+<pre data-lang="powershell"><code>Write-Host "=== Edge Process Inspection ==="
+
+Get-Process msedge |
+    Sort-Object CPU -Descending |
+    Select-Object `
+        Id,
+        ProcessName,
+        CPU,
+        WorkingSet64,
+        PrivateMemorySize64,
+        Handles,
+        Threads</code></pre>
+
+<p>再放一点 JavaScript：</p>
+
+<pre data-lang="javascript"><code>function measureMainThreadDelay() {
+    const start = performance.now();
+
+    setTimeout(() =&gt; {
+        const end = performance.now();
+        const expected = 100;
+        const actual = end - start;
+        const delay = actual - expected;
+
+        console.log({
+            expected,
+            actual,
+            delay
+        });
+    }, 100);
+}
+
+measureMainThreadDelay();</code></pre>
+
+<p>理论上，如果浏览器主线程一直很忙，那么：</p>
+
+<pre data-lang="text"><code>expected = 100 ms
+actual   = 100 ms
+delay    ≈ 0 ms</code></pre>
+
+<p>可能会变成：</p>
+
+<pre data-lang="text"><code>expected = 100 ms
+actual   = 247 ms
+delay    = 147 ms</code></pre>
+
+<p>这时候用户体验就是：</p>
+
+<pre data-lang="text"><code>鼠标操作
+    ↓
+浏览器收到事件
+    ↓
+事件排队
+    ↓
+主线程还在执行之前的 JavaScript
+    ↓
+等待
+    ↓
+终于处理 mousemove / keydown / scroll
+    ↓
+重新计算布局
+    ↓
+绘制
+    ↓
+GPU composite
+    ↓
+显示器显示</code></pre>
+
+<p>而任务管理器可能还是：</p>
+
+<pre data-lang="text"><code>CPU      11%
+Memory   48%
+Disk      1%
+GPU       7%</code></pre>
+
+<p>所以“占用率不高”和“系统不应该卡”之间并不存在严格等价关系。</p>
+
+<hr>
+
+<h2>第六部分：随机长段落压力</h2>
+
+<p>为了继续增加这个页面的长度，我再连续写一些正常自然语言。</p>
+
+<p>在浏览器性能分析中，有一个很常见的误区，就是把“机器够不够快”和“程序是不是有瓶颈”看成同一个问题。实际上，即使电脑性能非常强，一个存在单线程阻塞的软件仍然可以卡顿。反过来，一台配置并不特别高的电脑，只要任务比较容易并行、调度合理、渲染路径正常，也可以保持非常流畅。</p>
+
+<p>例如浏览器的页面滚动有时可以由 compositor thread 独立处理，因此即使 JavaScript 主线程有一些工作，滚动仍可能保持流畅。但是一旦某些页面效果要求每一次滚动都触发 JavaScript、重新计算布局或者修改样式，就可能迫使主线程参与每一帧。这时候同样的电脑、同样的浏览器，仅仅换一个网站，流畅程度就可能完全不同。</p>
+
+<p>ChatGPT 这种页面还有一个比较特殊的地方：回答不是一次性出现的，而是逐渐追加。因此前端应用需要不断接收新内容，再根据 Markdown 结构重新建立对应的元素。普通文字可能只是 <code>&lt;p&gt;</code>，代码块可能是 <code>&lt;pre&gt;&lt;code&gt;</code>，表格会变成多个 <code>&lt;table&gt;&lt;thead&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td&gt;</code> 元素，数学公式还可能生成大量 span、SVG 或其他结构。</p>
+
+<p>假设一个数学公式看起来只有两行，但实际 DOM 内部可能包含很多元素。这就意味着视觉上的两千字和 DOM 意义上的两千字完全不是同一个概念。</p>
+
+<p>如果一个会话里有大量 LaTeX、代码块、表格，那么页面 DOM 数量可能远高于纯文本聊天。</p>
+
+<p>比如这句话很短：</p>
+
+<div class="math-block">
+$$\frac{\partial}{\partial t}u(x,t)
+=
+\Delta u(x,t)+f(u(x,t)).$$
+</div>
+
+<p>但其浏览器内部渲染结构通常并不是一个简单字符串。</p>
+
+<p>再放一个比较复杂的公式：</p>
+
+<div class="math-block">
+$$\mathcal{L}(u)
+=
+\int_{\Omega}
+\left[
+\frac{1}{2}
+|\nabla u(x)|^2
++
+V(x)|u(x)|^2
+-
+F(u(x))
+\right]dx.$$
+</div>
+
+<p>Euler–Lagrange 方程可能写作</p>
+
+<div class="math-block">
+$$-\Delta u+V(x)u=f(u).$$
+</div>
+
+<p>如果研究的是非局部算子：</p>
+
+<div class="math-block">
+$$(-\Delta)^s u(x)
+=
+C_{n,s}
+\operatorname{P.V.}
+\int_{\mathbb R^n}
+\frac{u(x)-u(y)}
+{|x-y|^{n+2s}}
+\,dy.$$
+</div>
+
+<p>如果研究 Sobolev 空间，可以写：</p>
+
+<div class="math-block">
+$$H^s(\mathbb R^n)
+=
+\left\{
+u\in L^2(\mathbb R^n):
+\int_{\mathbb R^n}
+(1+|\xi|^2)^s
+|\widehat u(\xi)|^2\,d\xi
+&lt;\infty
+\right\}.$$
+</div>
+
+<p>甚至继续：</p>
+
+<div class="math-block">
+$$\|u\|_{H^s}^2
+=
+\int_{\mathbb R^n}
+(1+|\xi|^2)^s
+|\widehat u(\xi)|^2\,d\xi.$$
+</div>
+
+<p>如果此时页面滚动突然明显比上面纯文本区域更卡，就可以记一下。</p>
+
+<hr>
+
+<h2>第七部分：超长中文自然段</h2>
+
+<p>电脑“卡”其实是一个很模糊但是体验上非常真实的概念。一个人说电脑卡，可能是在说鼠标指针本身卡，也可能是窗口拖动不流畅，也可能是程序点击以后很久才响应，也可能是网页滚动掉帧，也可能是输入文字时字符出现滞后，也可能是动画帧率下降。不同类型的卡顿对应的技术原因差异非常大。</p>
+
+<p>如果鼠标指针本身都卡，那一般要更多考虑系统层面的中断、驱动、DPC 延迟、USB、显示驱动甚至硬件问题。如果只是 Edge 中的 ChatGPT 页面卡，但 Windows 设置、文件资源管理器、其他网页、视频播放以及其他程序都正常，那么系统级别的问题概率就下降很多。</p>
+
+<p>如果 Edge 所有网页都卡，而 Chrome 不会，那显然 Edge 本身的 Profile、扩展、硬件加速设置、实验功能或者缓存值得优先检查。如果 Edge 和 Chrome 都卡，但 Firefox 不会，那可能与 Chromium 共同组件、GPU 后端或者某个兼容性问题有关。</p>
+
+<p>如果三个浏览器都只有 ChatGPT 卡，那 ChatGPT 页面自身、聊天长度、账号状态或者页面内容结构值得重点怀疑。</p>
+
+<p>如果只有某一条特别长的聊天卡，新聊天完全正常，那么问题又进一步缩小到了这条聊天的前端渲染负担。</p>
+
+<p>你现在这次测试其实挺有价值，因为我们正在人为制造一个较长页面。</p>
+
+<p>而且我还故意加入了数学公式和代码块。</p>
+
+<p>下面继续增加一些复杂 Markdown。</p>
+
+<hr>
+
+<blockquote><p>这是一段引用。</p><p>引用元素本身通常不会造成什么性能问题，但是它会产生额外的 DOM 层级。</p><p>如果连续存在大量嵌套 Markdown 元素，页面的布局树和样式计算可能进一步增加。</p></blockquote>
+
+<p><strong>这是粗体。</strong></p>
+
+<p><em>这是斜体。</em></p>
+
+<p><strong><em>这是粗斜体。</strong></em></p>
+
+<p><code>这是行内代码。</code></p>
+
+<p>例如：</p>
+
+<p><code>Get-Process msedge</code></p>
+
+<p>以及：</p>
+
+<p><code>edge://gpu</code></p>
+
+<p>还有：</p>
+
+<p><code>edge://extensions</code></p>
+
+<p>以及：</p>
+
+<p><code>edge://flags</code></p>
+
+<p>不过不要现在随便动 flags。实验性功能往往容易把问题搞复杂。</p>
+
+<hr>
+
+<h2>第八部分：模拟长文章</h2>
+
+<p>假设我们设计一个非常简化的经济系统。经济中存在 \(N\) 个家庭，第 \(i\) 个家庭收入记为 \(Y_i\)。宏观统计通常可能观察：</p>
+
+<div class="math-block">
+$$\bar Y
+=
+\frac1N\sum_{i=1}^NY_i.$$
+</div>
+
+<p>但是显然 \(\bar Y\) 无法唯一描述整个收入分布。</p>
+
+<p>考虑经济体 A：</p>
+
+<div class="math-block">
+$$Y^A=(10,10,10,10,10).$$
+</div>
+
+<p>考虑经济体 B：</p>
+
+<div class="math-block">
+$$Y^B=(0,0,0,0,50).$$
+</div>
+
+<p>两个经济体都有：</p>
+
+<div class="math-block">
+$$\bar Y^A=\bar Y^B=10.$$
+</div>
+
+<p>但是结构显然完全不同。</p>
+
+<p>加入方差以后可以区分这两个例子，可是即使固定均值和方差，仍然存在无穷多个不同分布。</p>
+
+<p>因此可以定义一个更完整的状态：</p>
+
+<div class="math-block">
+$$\mathcal S_t
+=
+\mathcal L(Y_t),$$
+</div>
+
+<p>即时间 \(t\) 下微观状态变量的概率分布。</p>
+
+<p>传统宏观指标可以看成这个分布上的泛函：</p>
+
+<div class="math-block">
+$$M_j(\mathcal S_t)
+=
+\int \phi_j(x)\,d\mathcal S_t(x).$$
+</div>
+
+<p>当</p>
+
+<div class="math-block">
+$$\phi_1(x)=x$$
+</div>
+
+<p>时：</p>
+
+<div class="math-block">
+$$M_1(\mathcal S_t)=\mathbb E[X].$$
+</div>
+
+<p>当</p>
+
+<div class="math-block">
+$$\phi_2(x)=x^2$$
+</div>
+
+<p>时：</p>
+
+<div class="math-block">
+$$M_2(\mathcal S_t)=\mathbb E[X^2].$$
+</div>
+
+<p>因此传统宏观经济变量可以抽象为某些测量算子：</p>
+
+<div class="math-block">
+$$\mathcal M:
+\mathcal P(X)
+\rightarrow
+\mathbb R^k.$$
+</div>
+
+<p>这里 \(\mathcal P(X)\) 表示定义在状态空间 \(X\) 上的一组概率分布。</p>
+
+<p>于是：</p>
+
+<div class="math-block">
+$$\mathcal M(\mu)
+=
+\left(
+\int\phi_1d\mu,
+\dots,
+\int\phi_kd\mu
+\right).$$
+</div>
+
+<p>问题变成：</p>
+
+<div class="math-block">
+$$\mu_1\neq\mu_2$$
+</div>
+
+<p>是否可能满足：</p>
+
+<div class="math-block">
+$$\mathcal M(\mu_1)
+=
+\mathcal M(\mu_2)?$$
+</div>
+
+<p>当然通常是可能的。</p>
+
+<p>因此宏观统计过程本质上是一种降维：</p>
+
+<div class="math-block">
+$$\text{high-dimensional distribution}
+\longrightarrow
+\text{finite-dimensional statistics}.$$
+</div>
+
+<p>这实际上可以进一步发展成一个 inverse problem。</p>
+
+<p>观察量：</p>
+
+<div class="math-block">
+$$y=\mathcal M(\mu).$$
+</div>
+
+<p>希望恢复：</p>
+
+<div class="math-block">
+$$\mu.$$
+</div>
+
+<p>但是如果 \(\mathcal M\) 非单射，inverse problem 就不唯一。</p>
+
+<p>这与你最初思考的“宏观指标是不是只保留了低阶矩”在数学上非常接近，不过更加一般，因为你甚至不需要假设宏观指标一定是矩。</p>
+
+<p>它们可以是任意 functional。</p>
+
+<p>例如 unemployment rate 本身严格地说更接近：</p>
+
+<div class="math-block">
+$$U(\mu)
+=
+\int
+\mathbf 1_{\{\text{unemployed}\}}
+\,d\mu.$$
+</div>
+
+<p>也就是说它其实是分布在某个集合上的概率质量，而不完全等价于传统意义上的一阶矩。</p>
+
+<p>GDP 也不是简单的某个随机变量的均值，而是一种聚合统计。</p>
+
+<p>所以如果之后真的建立纯数学理论，更准确的基础可能不是：</p>
+
+<blockquote><p>所有宏观变量都是低阶矩。</p></blockquote>
+
+<p>而是：</p>
+
+<blockquote><p>宏观观测量构成对高维经济状态分布的一组有限维泛函。</p></blockquote>
+
+<p>然后“矩”是其中一个非常重要的特例。</p>
+
+<p>这样理论会更稳。</p>
+
+<p>不过现在主要目的是测试卡顿，所以继续写。</p>
+
+<hr>
+
+<h2>第九部分：大量短句测试</h2>
+
+<p>现在是短句。</p>
+
+<p>这一句很短。</p>
+
+<p>这一句也很短。</p>
+
+<p>浏览器需要不断创建段落。</p>
+
+<p>段落之间存在 margin。</p>
+
+<p>布局树发生变化。</p>
+
+<p>页面高度继续增长。</p>
+
+<p>滚动条越来越短。</p>
+
+<p>Renderer Process 的内存可能会增加。</p>
+
+<p>GPU 不一定增加很多。</p>
+
+<p>JavaScript heap 可能增加。</p>
+
+<p>DOM nodes 也可能增加。</p>
+
+<p>CSS style recalculation 也存在成本。</p>
+
+<p>Layout 也存在成本。</p>
+
+<p>Paint 也存在成本。</p>
+
+<p>Composite 也存在成本。</p>
+
+<p>Rasterization 也存在成本。</p>
+
+<p>这些步骤并不总是在同一个线程。</p>
+
+<p>也并不总是全部执行。</p>
+
+<p>Chromium 会尝试优化。</p>
+
+<p>但是复杂网页还是可能触发昂贵路径。</p>
+
+<p>特别是不断变化的网页。</p>
+
+<p>ChatGPT 正属于不断变化的网页。</p>
+
+<p>尤其回答正在生成的时候。</p>
+
+<p>此时页面不是静态的。</p>
+
+<p>每次 token 到达以后都可能产生 UI 更新。</p>
+
+<p>当然实际实现通常会批量更新。</p>
+
+<p>否则成本会非常高。</p>
+
+<p>现在你的浏览器正在同时显示很多中文。</p>
+
+<p>还有英文。</p>
+
+<p>还有公式。</p>
+
+<p>还有表格。</p>
+
+<p>还有代码。</p>
+
+<p>还有 Markdown。</p>
+
+<p>如果现在依旧很顺畅，那么这个测试结果是有信息量的。</p>
+
+<hr>
+
+<h2>第十部分：字符复杂度</h2>
+
+<p>English:</p>
+
+<p>ABCDEFGHIJKLMNOPQRSTUVWXYZ</p>
+
+<p>abcdefghijklmnopqrstuvwxyz</p>
+
+<p>0123456789</p>
+
+<p>中文：</p>
+
+<p>天地玄黄宇宙洪荒日月盈昃辰宿列张寒来暑往秋收冬藏。</p>
+
+<p>希腊字母：</p>
+
+<div class="math-block">
+$$\alpha,\beta,\gamma,\delta,\epsilon,\zeta,\eta,\theta,
+\iota,\kappa,\lambda,\mu,\nu,\xi,\pi,\rho,\sigma,\tau,
+\phi,\chi,\psi,\omega.$$
+</div>
+
+<p>数学符号：</p>
+
+<div class="math-block">
+$$\forall,\exists,\in,\notin,\subset,\subseteq,\cup,\cap,
+\sum,\prod,\int,\oint,\partial,\nabla,\infty,\approx,\equiv.$$
+</div>
+
+<p>箭头：</p>
+
+<div class="math-block">
+$$\rightarrow,\leftarrow,\Rightarrow,\Leftarrow,
+\longrightarrow,\longleftarrow,\mapsto.$$
+</div>
+
+<p>再加上：</p>
+
+<p>你好 hello 你好 hello 你好 hello 你好 hello
+数学 mathematics 数学 mathematics 数学 mathematics
+浏览器 browser 浏览器 browser 浏览器 browser
+性能 performance 性能 performance 性能 performance
+渲染 rendering 渲染 rendering 渲染 rendering</p>
+
+<hr>
+
+<h2>第十一部分：模拟聊天长期增长</h2>
+
+<p>假设一条聊天已经有 300 个消息节点。</p>
+
+<p>每条用户消息平均 500 字。</p>
+
+<p>每条助手消息平均 3000 字。</p>
+
+<p>那么粗略文本量可能达到：</p>
+
+<div class="math-block">
+$$150\times500+150\times3000
+=
+525000$$
+</div>
+
+<p>也就是约 52.5 万个中文字符量级。</p>
+
+<p>如果其中还包含代码、公式、表格，DOM 节点数可能远高于消息数量本身。</p>
+
+<p>假设每一条消息只有 50 个 DOM nodes：</p>
+
+<div class="math-block">
+$$300\times50=15000.$$
+</div>
+
+<p>如果复杂 Markdown 导致平均达到 200 个：</p>
+
+<div class="math-block">
+$$300\times200=60000.$$
+</div>
+
+<p>当然这只是示意，不代表 ChatGPT 实际 DOM 结构就是这个规模。</p>
+
+<p>浏览器处理几万个 DOM 元素并不是一定会卡，但是如果发生频繁的全局 style recalculation 或 layout，就可能明显影响性能。</p>
+
+<p>一个更重要的问题是算法复杂度。</p>
+
+<p>假设每次新增内容，某个扩展都扫描整个页面：</p>
+
+<div class="math-block">
+$$T(n)=O(n).$$
+</div>
+
+<p>回答生成过程中新增 \(n\) 次，那么总成本可能近似：</p>
+
+<div class="math-block">
+$$\sum_{k=1}^{n}k
+=
+\frac{n(n+1)}2
+=
+O(n^2).$$
+</div>
+
+<p>这个差别就很大。</p>
+
+<p>例如：</p>
+
+<div class="math-block">
+$$n=100$$
+</div>
+
+<p>时：</p>
+
+<div class="math-block">
+$$\frac{100\times101}{2}
+=
+5050.$$
+</div>
+
+<p>而：</p>
+
+<div class="math-block">
+$$n=10000$$
+</div>
+
+<p>时：</p>
+
+<div class="math-block">
+$$\frac{10000\times10001}{2}
+=
+50,005,000.$$
+</div>
+
+<p>这就是为什么某些程序会出现：</p>
+
+<blockquote><p>开始非常顺畅，内容一多以后突然越来越慢。</p></blockquote>
+
+<hr>
+
+<h2>第十二部分：继续制造长度</h2>
+
+<p>电脑性能问题有时候特别让人烦，就是因为体感和监控指标对不上。人眼对延迟其实非常敏感。比如一个按钮正常情况下 30 毫秒就有反馈，如果突然变成 150 毫秒，人已经可以察觉。而 150 毫秒对于电脑硬件来说又并不是一个很大的时间，因此平均一分钟以后，任务管理器几乎不可能直观告诉你刚才发生了一次 150 毫秒的延迟峰值。</p>
+
+<p>平均值会掩盖尖峰。</p>
+
+<p>假设 10 秒时间里，CPU 延迟分别是：</p>
+
+<div class="math-block">
+$$2,2,2,2,2,2,2,2,2,302$$
+</div>
+
+<p>毫秒。</p>
+
+<p>平均值是：</p>
+
+<div class="math-block">
+$$32\text{ ms}.$$
+</div>
+
+<p>可是用户体验会被那个 302 ms 的峰值强烈影响。</p>
+
+<p>因此性能诊断里经常看 percentile。</p>
+
+<p>例如：</p>
+
+<p>P50 latency
+P90 latency
+P95 latency
+P99 latency</p>
+
+<p>如果 P50 只有 5 ms，而 P99 达到 500 ms，那么平均体验可能看似不错，但每隔一阵子就会出现非常明显的卡顿。</p>
+
+<p>DPC latency 也是类似。</p>
+
+<p>显卡驱动、网卡驱动、音频驱动、USB 驱动等都可能造成延迟尖峰。</p>
+
+<p>但是鉴于你之前描述“其他的好像都还可以，就是 Edge 用 GPT 很卡”，那么浏览器局部问题仍然比整个 Windows DPC 问题更值得优先调查。</p>
+
+<p>这也是为什么我前面建议我们把问题从“电脑卡”进一步细分。</p>
+
+<p>实际上可以拆成：</p>
+
+<p><strong>Windows 卡不卡？</strong></p>
+
+<p><strong>Edge 卡不卡？</strong></p>
+
+<p><strong>Edge 的所有网站卡不卡？</strong></p>
+
+<p><strong>只有 ChatGPT 卡不卡？</strong></p>
+
+<p><strong>ChatGPT 的新聊天卡不卡？</strong></p>
+
+<p><strong>只有超长聊天卡不卡？</strong></p>
+
+<p>这种二分法比盯着任务管理器有效得多。</p>
+
+<hr>
+
+<h2>第十三部分：复杂公式继续压</h2>
+
+<div class="math-block">
+$$\begin{aligned}
+E[u]
+&amp;=
+\frac12
+\int_{\mathbb R^n}
+|\nabla u|^2\,dx
++
+\frac12
+\int_{\mathbb R^n}
+V(x)|u|^2\,dx\\
+&amp;\quad
+-
+\int_{\mathbb R^n}
+F(u)\,dx.
+\end{aligned}$$
+</div>
+
+<p>若</p>
+
+<div class="math-block">
+$$E'(u)=0,$$
+</div>
+
+<p>形式上得到：</p>
+
+<div class="math-block">
+$$-\Delta u+V(x)u=f(u).$$
+</div>
+
+<p>考虑线性化：</p>
+
+<div class="math-block">
+$$L_u v
+=
+-\Delta v
++
+V(x)v
+-
+f'(u)v.$$
+</div>
+
+<p>谱问题：</p>
+
+<div class="math-block">
+$$L_uv=\lambda v.$$
+</div>
+
+<p>若：</p>
+
+<div class="math-block">
+$$0\notin\sigma_{\mathrm{ess}}(L_u)$$
+</div>
+
+<p>且零特征值孤立，则可以进一步讨论：</p>
+
+<div class="math-block">
+$$\dim \ker L_u&lt;\infty.$$
+</div>
+
+<p>而 Fredholm 指数：</p>
+
+<div class="math-block">
+$$\operatorname{ind}(L_u)
+=
+\dim \ker L_u
+-
+\dim \ker L_u^*.$$
+</div>
+
+<p>在适当自伴条件下：</p>
+
+<div class="math-block">
+$$L_u=L_u^*,$$
+</div>
+
+<p>因此：</p>
+
+<div class="math-block">
+$$\operatorname{ind}(L_u)=0.$$
+</div>
+
+<p>再考虑一个映射：</p>
+
+<div class="math-block">
+$$F:X\times\Lambda\rightarrow Y$$
+</div>
+
+<p>满足：</p>
+
+<div class="math-block">
+$$F(u_0,\lambda_0)=0.$$
+</div>
+
+<p>如果：</p>
+
+<div class="math-block">
+$$D_uF(u_0,\lambda_0)$$
+</div>
+
+<p>可逆，那么根据隐函数定理，可以在 \(\lambda_0\) 附近得到：</p>
+
+<div class="math-block">
+$$u=u(\lambda).$$
+</div>
+
+<p>满足：</p>
+
+<div class="math-block">
+$$F(u(\lambda),\lambda)=0.$$
+</div>
+
+<p>若导数不是可逆而是 Fredholm，则可能进入 Lyapunov–Schmidt reduction、bifurcation theory 等框架。</p>
+
+<p>继续：</p>
+
+<div class="math-block">
+$$X
+=
+\ker L\oplus X_1,$$
+</div>
+
+<div class="math-block">
+$$Y
+=
+\operatorname{Ran}L\oplus Y_1.$$
+</div>
+
+<p>再将：</p>
+
+<div class="math-block">
+$$u=u_0+z+w$$
+</div>
+
+<p>其中：</p>
+
+<div class="math-block">
+$$z\in\ker L,\qquad w\in X_1.$$
+</div>
+
+<p>然后把无限维问题局部约化成有限维方程。</p>
+
+<p>这里已经足够让公式排版器工作一阵了。</p>
+
+<hr>
+
+<h2>第十四部分：浏览器诊断的实际逻辑</h2>
+
+<p>如果你现在感觉“这条回答正在生成时卡，但是生成结束以后就明显流畅”，这个现象非常关键，因为它暗示<strong>增量更新</strong>本身可能是主要成本。</p>
+
+<p>如果生成结束后仍然很卡，则更像是页面规模或者某个持续运行的脚本问题。</p>
+
+<p>如果生成时不卡，只有滚动时卡，则偏向渲染合成路径。</p>
+
+<p>如果滚动也不卡，只是输入文字卡，则偏向输入事件、页面脚本或者某个输入相关扩展。</p>
+
+<p>如果输入框卡，但 DevTools Console 输入不卡，则进一步说明 ChatGPT 页面逻辑参与其中。</p>
+
+<p>如果无痕窗口正常，那几乎应该优先排查扩展。</p>
+
+<p>当然“几乎”不是绝对，因为无痕窗口也可能使用不同缓存、cookie、登录状态和站点存储。</p>
+
+<hr>
+
+<h2>第十五部分：重复长文本，继续压页面</h2>
+
+<p>现在继续制造一些没有特别信息价值、但可以增加页面负担的文字。</p>
+
+<p>春天的天气逐渐升高，城市里的树木开始抽出新芽。街道上的人流从早晨开始增加，咖啡店打开门，公交车进入站台，路口的红绿灯按照固定的周期变化。远处的建筑物被阳光照亮，玻璃幕墙反射出天空的颜色。办公室里的人打开电脑，浏览器恢复昨天没有关闭的标签页，一些程序在后台检查更新，一些应用连接服务器同步信息。</p>
+
+<p>到了中午，阳光更强，路面温度开始升高。城市的声音变得复杂，车辆、空调、行人、施工设备共同构成了一层连续的背景噪声。人在这样的环境里通常不会主动注意所有声音，大脑会自动过滤大量重复的信息，只保留重要变化。</p>
+
+<p>电脑系统也存在类似机制。</p>
+
+<p>操作系统、浏览器、GPU 驱动和应用程序都在不断尝试避免不必要的工作。</p>
+
+<p>如果页面某个区域没有变化，理论上浏览器并不需要重新绘制整个页面。</p>
+
+<p>如果某个元素被提升到独立 compositor layer，也可能只需要改变其变换矩阵，而不重新 rasterize 全部内容。</p>
+
+<p>很多现代 UI 动画因此推荐使用：</p>
+
+<pre data-lang="css"><code>transform</code></pre>
+
+<p>以及：</p>
+
+<pre data-lang="css"><code>opacity</code></pre>
+
+<p>而尽量避免频繁修改会触发 layout 的属性。</p>
+
+<p>比如：</p>
+
+<pre data-lang="css"><code>width
+height
+top
+left</code></pre>
+
+<p>可能更容易引发 layout。</p>
+
+<p>当然现代浏览器优化很多，不能机械理解。</p>
+
+<hr>
+
+<h2>第十六部分：再给一个巨大表格</h2>
+
+<div class="table-wrap"><table><thead><tr><th align="right">编号</th><th>测试项目</th><th>当前页面能否测试</th><th>观察内容</th></tr></thead><tbody><tr><td align="right">01</td><td>流式文本</td><td>可以</td><td>输出期间是否掉帧</td></tr><tr><td align="right">02</td><td>中文排版</td><td>可以</td><td>字体显示是否延迟</td></tr><tr><td align="right">03</td><td>英文排版</td><td>可以</td><td>换行是否流畅</td></tr><tr><td align="right">04</td><td>数学公式</td><td>可以</td><td>公式出现时是否顿一下</td></tr><tr><td align="right">05</td><td>代码块</td><td>可以</td><td>代码高亮是否卡</td></tr><tr><td align="right">06</td><td>表格</td><td>可以</td><td>表格生成是否明显卡</td></tr><tr><td align="right">07</td><td>页面增长</td><td>可以</td><td>内容越多是否越慢</td></tr><tr><td align="right">08</td><td>快速滚动</td><td>可以</td><td>是否掉帧</td></tr><tr><td align="right">09</td><td>慢速滚动</td><td>可以</td><td>是否有轻微抖动</td></tr><tr><td align="right">10</td><td>输入响应</td><td>可以</td><td>键盘输入延迟</td></tr><tr><td align="right">11</td><td>文本选择</td><td>可以</td><td>拖选是否顺畅</td></tr><tr><td align="right">12</td><td>复制</td><td>可以</td><td>Ctrl+C 是否延迟</td></tr><tr><td align="right">13</td><td>查找</td><td>可以</td><td>Ctrl+F 搜索速度</td></tr><tr><td align="right">14</td><td>切换标签</td><td>可以</td><td>返回页面恢复速度</td></tr><tr><td align="right">15</td><td>页面缩放</td><td>可以</td><td>Ctrl+/- 响应</td></tr><tr><td align="right">16</td><td>GPU 合成</td><td>间接</td><td>滚动表现</td></tr><tr><td align="right">17</td><td>主线程</td><td>间接</td><td>输入表现</td></tr><tr><td align="right">18</td><td>网络</td><td>部分</td><td>流式输出停顿</td></tr><tr><td align="right">19</td><td>内存</td><td>外部看</td><td>Edge 任务管理器</td></tr><tr><td align="right">20</td><td>Renderer</td><td>外部看</td><td>Shift+Esc</td></tr><tr><td align="right">21</td><td>GPU Process</td><td>外部看</td><td>Edge 任务管理器</td></tr><tr><td align="right">22</td><td>扩展</td><td>需要对照</td><td>无痕窗口</td></tr><tr><td align="right">23</td><td>Profile</td><td>需要对照</td><td>新配置文件</td></tr><tr><td align="right">24</td><td>Chromium</td><td>需要对照</td><td>Chrome</td></tr><tr><td align="right">25</td><td>Edge 特有问题</td><td>需要对照</td><td>Chrome vs Edge</td></tr></tbody></table></div>
+
+<hr>
+
+<h2>第十七部分：最后再塞一段长文本</h2>
+
+<p>如果目前你看到这里的时候页面依然很流畅，那么可以先记成“长内容本身没有立即触发严重卡顿”。接下来你把你原本想给我的那个东西发过来以后，我们可以直接在这一条会话里继续，看看随着整个对话越来越长，卡顿会不会逐渐出现。这样比单纯猜测要有用，因为我们等于在制造一个简单的可重复测试。</p>
+
+<p>如果现在已经开始卡，就更加有价值。你可以特别区分三种体验：第一种是生成文字的时候卡，文字一停就好；第二种是生成结束以后滚动仍然卡；第三种是页面看起来正常，但是只要在输入框打字就卡。这三种情况对应的问题方向其实不太一样。</p>
+
+<p>另外还可以试一个非常简单的操作：现在快速从页面最底部滚到最上面，再快速滚到底部。不要看 CPU，只凭体感。如果滚动动画很顺，但是输入框卡，那就是一个方向；如果滚动本身都明显一截一截，那又是另一个方向。</p>
+
+<p>我再刻意写一段连续不断、没有很多 Markdown 元素的纯文本，用来和前面的公式区进行对照。如果纯文本区滚动非常流畅而公式密集区域明显掉帧，那么也可以说明不同内容的渲染成本可能存在差异。现代浏览器的文本排版虽然非常成熟，但页面上的每一个字符最终都要经过字体选择、glyph shaping、行宽计算、断行、绘制等步骤。中文字符的断行方式和英文空格断行也不完全一样。数学公式又存在自己的 layout tree。代码块可能还有 syntax highlighting。表格则需要进行列宽计算。因此同样一万字，不同结构的页面性能完全可能不同。</p>
+
+<p>继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续继续。</p>
+
+<p>这一段故意重复，因为纯文本重复字符对于模型内容本身没什么意义，但可以增加页面高度。</p>
+
+<p>最后再来一组公式：</p>
+
+<div class="math-block">
+$$\sum_{k=1}^{n}k
+=
+\frac{n(n+1)}2$$
+</div>
+
+<div class="math-block">
+$$\sum_{k=1}^{n}k^2
+=
+\frac{n(n+1)(2n+1)}6$$
+</div>
+
+<div class="math-block">
+$$\sum_{k=1}^{n}k^3
+=
+\left[
+\frac{n(n+1)}2
+\right]^2$$
+</div>
+
+<div class="math-block">
+$$e^x
+=
+\sum_{n=0}^{\infty}
+\frac{x^n}{n!}$$
+</div>
+
+<div class="math-block">
+$$\sin x
+=
+\sum_{n=0}^{\infty}
+(-1)^n
+\frac{x^{2n+1}}{(2n+1)!}$$
+</div>
+
+<div class="math-block">
+$$\cos x
+=
+\sum_{n=0}^{\infty}
+(-1)^n
+\frac{x^{2n}}{(2n)!}$$
+</div>
+
+<div class="math-block">
+$$\zeta(s)
+=
+\sum_{n=1}^{\infty}
+\frac1{n^s}$$
+</div>
+
+<div class="math-block">
+$$\Gamma(s)
+=
+\int_0^\infty
+x^{s-1}e^{-x}\,dx$$
+</div>
+
+<p>到这里这一条消息已经足够长，而且同时覆盖了 <strong>纯文本 + Markdown + LaTeX + 表格 + 代码块 + 中英混排 + 长 DOM 页面</strong>，基本可以当第一轮压力测试。</p>
+
+<p>你现在只告诉我体感即可：<strong>流畅 / 生成时卡 / 滚动卡 / 输入卡，哪一种？</strong></p>
+<!-- ARTICLE:END -->
+        </div>
+
+        <footer class="post-foot">
+          <a class="post-back mono" href="../index.html#writing">← 回到文章列表</a>
+        </footer>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+
+      <div class="contact-list footer-contact">
+        <a class="contact-row reveal" href="https://x.com/Andy_Lin778" target="_blank" rel="noopener">
+          <span class="contact-label mono">X / TWITTER</span>
+          <span class="contact-value">@Andy_Lin778</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="https://github.com/AndyLin778" target="_blank" rel="noopener">
+          <span class="contact-label mono">GITHUB</span>
+          <span class="contact-value">github.com/AndyLin778</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="mailto:andyzhou1314520@gmail.com">
+          <span class="contact-label mono">GMAIL</span>
+          <span class="contact-value">andyzhou1314520@gmail.com</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="mailto:3289413901@qq.com">
+          <span class="contact-label mono">QQ MAIL</span>
+          <span class="contact-value">3289413901@qq.com</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="footer-shell mono">
+        <span>© <span id="year">2026</span> 你的名字</span>
+        <span class="footer-note">HTML / CSS / JavaScript 手写 · 无构建工具</span>
+        <span id="footerClock">LOCAL --:--:--</span>
+        <a href="#article" class="footer-top">回到顶部 ↑</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="../assets/js/script.js"></script>
+  <script src="../assets/katex/katex.min.js"></script>
+  <script src="../assets/katex/contrib/auto-render.min.js"></script>
+  <script>
+    // 数学公式渲染：$$...$$ 与 \[...\] 为独立公式行，\(...\) 为行内公式
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false }
+        ],
+        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "option"],
+        throwOnError: false
+      });
+    }
+  </script>
+</body>
+</html>

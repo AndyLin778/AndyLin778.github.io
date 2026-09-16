@@ -3,122 +3,237 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="我的个人网站 - 欢迎了解我的经历与作品">
-  <title>我的个人网站</title>
-  <link rel="stylesheet" href="style.css">
+  <meta name="description" content="你的名字的个人网站 - 项目、文章、科研与游戏">
+  <meta name="theme-color" content="#fdfdfd">
+  <title>你的名字 · 个人网站</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <script>
+    // 标记 JS 可用：样式里只有 html.js 才会启用“裁切揭示”等动效，
+    // 万一脚本没加载成功，文字也不会被裁掉看不见。
+    document.documentElement.classList.add("js");
+    // 系统开启了“减少动效”时提前打标记，让 CSS 直接给出静态版本。
+    try {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.setAttribute("data-reduced", "");
+      }
+    } catch (error) {
+      /* 浏览器不支持 matchMedia 时按正常动效处理 */
+    }
+  </script>
 </head>
 <body>
 
-  <!-- 导航栏 -->
+  <a class="skip-link mono" href="#work">跳到正文 ↓</a>
+
+  <!-- 顶部导航 -->
   <header class="navbar">
-    <nav class="nav-container">
-      <a href="#home" class="nav-logo">My&nbsp;Page</a>
-      <ul class="nav-links" id="navLinks">
-        <li><a href="#home" class="nav-link active">首页</a></li>
-        <li><a href="#about" class="nav-link">关于</a></li>
-        <li><a href="#projects" class="nav-link">项目</a></li>
-        <li><a href="#contact" class="nav-link">联系</a></li>
-      </ul>
-      <button class="nav-toggle" id="navToggle" aria-label="切换导航菜单">
+    <div class="shell nav-shell">
+      <a href="#home" class="brand">
+        <span class="brand-name">你的名字</span><span class="brand-dot">.</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="页面导航">
+        <a href="#work" class="nav-link">项目</a>
+        <a href="#writing" class="nav-link">文章</a>
+        <a href="#research" class="nav-link">科研</a>
+        <a href="#games" class="nav-link">游戏</a>
+      </nav>
+
+      <span class="nav-clock mono" id="navClock" aria-hidden="true">LOCAL --:--</span>
+
+      <button class="nav-toggle" id="navToggle" type="button"
+              aria-label="切换导航菜单" aria-expanded="false" aria-controls="navLinks">
         <span></span>
         <span></span>
         <span></span>
       </button>
-    </nav>
+    </div>
   </header>
 
   <main>
-    <!-- 首页 / 个人简介 -->
+    <!-- ============ 首屏：大字 + 扫描线（动态文字） ============ -->
     <section id="home" class="hero">
-      <div class="avatar" aria-label="头像占位">
-        <span>👤</span>
-      </div>
-      <h1>你好，我是 <span class="highlight">你的名字</span></h1>
-      <p class="hero-subtitle">一名热爱创造的前端开发者 / 设计师 / 创作者</p>
-      <p class="hero-desc">
-        这里是我的个人主页，用来展示我的经历、作品和联系方式。
-        欢迎随时浏览，也期待与你交流！
+      <h1 class="sr-only">你好，我是 你的名字</h1>
+
+      <div class="hero-scanline" aria-hidden="true"></div>
+
+      <p class="hero-word">
+        <span class="hero-word-text" id="heroWord">MY PAGE</span>
+        <span class="hero-caret" aria-hidden="true"></span>
       </p>
-      <div class="hero-actions">
-        <a href="#projects" class="btn btn-primary">查看我的项目</a>
-        <a href="#contact" class="btn btn-outline">联系我</a>
+
+      <p class="hero-typed mono">
+        <span id="typedText">把想法变成看得见的东西</span><span class="typed-cursor" aria-hidden="true">▌</span>
+      </p>
+
+      <div class="hero-meta mono">
+        <span class="hero-meta-left">北京时间 · UTC+08:00</span>
+        <span class="hero-meta-center" id="heroClock">LOCAL --:--:--</span>
+        <span class="hero-meta-right">向下滚动 ↓</span>
       </div>
     </section>
 
-    <!-- 关于 -->
-    <section id="about" class="section">
-      <div class="section-container">
-        <h2 class="section-title">关于我</h2>
-        <p class="section-subtitle">简单介绍一下自己</p>
-        <div class="about-card">
-          <p>
-            你好！我是一名对技术充满热情的学习者，喜欢把想法变成看得见的产品。
-            平时主要研究 Web 开发，也喜欢摄影、写作和折腾各种有趣的小工具。
-          </p>
-          <ul class="about-list">
-            <li>🎨 喜欢简洁、优雅的设计</li>
-            <li>💻 热爱用代码解决问题</li>
-            <li>🚀 持续学习，保持好奇</li>
-          </ul>
+    <!-- ============ 01 项目 ============ -->
+    <section id="work" class="section">
+      <div class="shell">
+        <header class="section-head reveal">
+          <h2 class="section-title mono">01 / WORK</h2>
+          <span class="section-note mono" aria-hidden="true">做出来的东西</span>
+        </header>
+
+        <div class="cat-grid">
+          <section class="cat reveal">
+            <header class="cat-head">
+              <h3 class="cat-name">工具</h3>
+              <span class="cat-count mono">00</span>
+            </header>
+            <!-- 有项目时，把每个项目写成 <li><a class="entry" href="...">…</a></li> -->
+            <ul class="entry-list"></ul>
+            <p class="cat-empty mono">待添加</p>
+          </section>
+
+          <section class="cat reveal">
+            <header class="cat-head">
+              <h3 class="cat-name">游戏</h3>
+              <span class="cat-count mono">00</span>
+            </header>
+            <ul class="entry-list"></ul>
+            <p class="cat-empty mono">待添加</p>
+          </section>
+
+          <section class="cat reveal">
+            <header class="cat-head">
+              <h3 class="cat-name">算法</h3>
+              <span class="cat-count mono">待定</span>
+            </header>
+            <ul class="entry-list"></ul>
+            <p class="cat-empty mono">待添加</p>
+          </section>
         </div>
       </div>
     </section>
 
-    <!-- 项目展示 -->
-    <section id="projects" class="section section-alt">
-      <div class="section-container">
-        <h2 class="section-title">我的项目</h2>
-        <p class="section-subtitle">一些我最近在做的事情</p>
-        <div class="project-grid">
-          <article class="project-card">
-            <div class="project-thumb">📁</div>
-            <h3>项目一：个人博客</h3>
-            <p>一个支持 Markdown 写作的轻量级博客系统，用于记录学习笔记与生活随笔。</p>
-            <span class="project-tag">Web 开发</span>
-          </article>
-          <article class="project-card">
-            <div class="project-thumb">🛠</div>
-            <h3>项目二：效率工具</h3>
-            <p>帮助日常任务自动化的命令行小工具，支持自定义规则与定时提醒。</p>
-            <span class="project-tag">工具 / 自动化</span>
-          </article>
-          <article class="project-card">
-            <div class="project-thumb">📊</div>
-            <h3>项目三：数据可视化</h3>
-            <p>将复杂数据转化为直观图表的展示页面，支持多种图表类型与交互。</p>
-            <span class="project-tag">数据可视化</span>
-          </article>
+    <!-- ============ 02 文章 ============ -->
+    <section id="writing" class="section">
+      <div class="shell">
+        <header class="section-head reveal">
+          <h2 class="section-title mono">02 / WRITING</h2>
+          <span class="section-note mono" aria-hidden="true">写下来的东西</span>
+        </header>
+
+        <div class="cat-grid">
+          <section class="cat reveal">
+            <header class="cat-head">
+              <h3 class="cat-name">杂谈</h3>
+              <span class="cat-count mono">01</span>
+            </header>
+            <ul class="entry-list">
+              <li>
+                <a class="entry" href="posts/2026-09-16-long-text-render-test.html">
+                  <span class="entry-title">长文本渲染压力测试</span>
+                  <span class="entry-date mono">2026.09.16</span>
+                </a>
+              </li>
+            </ul>
+          </section>
+
+          <section class="cat reveal">
+            <header class="cat-head">
+              <h3 class="cat-name">诗歌</h3>
+              <span class="cat-count mono">00</span>
+            </header>
+            <ul class="entry-list"></ul>
+            <p class="cat-empty mono">待添加</p>
+          </section>
+
+          <section class="cat reveal">
+            <header class="cat-head">
+              <h3 class="cat-name">小说</h3>
+              <span class="cat-count mono">00</span>
+            </header>
+            <ul class="entry-list"></ul>
+            <p class="cat-empty mono">待添加</p>
+          </section>
         </div>
       </div>
     </section>
 
-    <!-- 联系 -->
-    <section id="contact" class="section">
-      <div class="section-container">
-        <h2 class="section-title">联系我</h2>
-        <p class="section-subtitle">欢迎通过以下方式找到我</p>
-        <div class="contact-links">
-          <a href="mailto:yourname@example.com" class="contact-item">✉️ yourname@example.com</a>
-          <a href="https://github.com/yourname" target="_blank" rel="noopener" class="contact-item">🐙 GitHub</a>
-          <a href="#" class="contact-item">💬 微信 / 微博</a>
-        </div>
+    <!-- ============ 03 科研 ============ -->
+    <section id="research" class="section">
+      <div class="shell">
+        <header class="section-head reveal">
+          <h2 class="section-title mono">03 / RESEARCH</h2>
+          <span class="section-note mono" aria-hidden="true">在学的东西</span>
+        </header>
+
+        <p class="section-empty reveal">
+          这一栏还在整理。之后会放研究笔记、读过的论文，以及一些自己推导的东西。
+        </p>
+      </div>
+    </section>
+
+    <!-- ============ 04 游戏 ============ -->
+    <section id="games" class="section">
+      <div class="shell">
+        <header class="section-head reveal">
+          <h2 class="section-title mono">04 / GAMES</h2>
+          <span class="section-note mono" aria-hidden="true">在玩的东西</span>
+        </header>
+
+        <p class="section-empty reveal">
+          正在从 Steam 库导入：在玩、玩过和想玩的游戏都会列在这里。
+        </p>
       </div>
     </section>
   </main>
 
-  <!-- 底部版权 -->
-  <footer class="footer">
-    <p>© <span id="year">2026</span> 你的名字 · 用 ♥ 制作</p>
+  <!-- ============ 页脚：联系方式 ============ -->
+  <footer class="site-footer">
+    <div class="shell">
+
+      <div class="contact-list footer-contact">
+        <a class="contact-row reveal" href="https://x.com/Andy_Lin778" target="_blank" rel="noopener">
+          <span class="contact-label mono">X / TWITTER</span>
+          <span class="contact-value">@Andy_Lin778</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="https://github.com/AndyLin778" target="_blank" rel="noopener">
+          <span class="contact-label mono">GITHUB</span>
+          <span class="contact-value">github.com/AndyLin778</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="mailto:andyzhou1314520@gmail.com">
+          <span class="contact-label mono">GMAIL</span>
+          <span class="contact-value">andyzhou1314520@gmail.com</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="mailto:3289413901@qq.com">
+          <span class="contact-label mono">QQ MAIL</span>
+          <span class="contact-value">3289413901@qq.com</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="footer-shell mono">
+        <span>© <span id="year">2026</span> 你的名字</span>
+        <span class="footer-note">HTML / CSS / JavaScript 手写 · 无构建工具</span>
+        <span id="footerClock">LOCAL --:--:--</span>
+        <a href="#home" class="footer-top">回到顶部 ↑</a>
+      </div>
+
+    </div>
   </footer>
 
   <!-- 欢迎弹窗 -->
-  <div class="welcome-modal" id="welcomeModal" role="dialog" aria-live="polite">
+  <div class="welcome-modal" id="welcomeModal" role="dialog" aria-live="polite" aria-label="欢迎提示">
     <div class="modal-content">
-      <p>👋 欢迎来到我的个人网站！</p>
-      <button class="modal-close" id="modalClose">知道了</button>
+      <p class="modal-label mono">WELCOME</p>
+      <p class="modal-text">👋 欢迎来到我的个人网站！</p>
+      <button class="modal-close mono" id="modalClose" type="button">知道了</button>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script src="assets/js/script.js"></script>
 </body>
 </html>
