@@ -57,6 +57,11 @@ GIT = find_git()
 # 所有 git 命令都带 -C，所以在哪个目录运行都不影响。
 REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
+# 体积护栏：超过 WARN 就提醒，超过 ABORT 直接拦住
+# （GitHub 单文件 100 MB 硬上限、50 MB 会警告，仓库建议控制在 1 GB 以内）
+SIZE_WARN_MB = 5
+SIZE_ABORT_MB = 50
+
 
 def git(*args):
     return subprocess.run(
@@ -66,6 +71,22 @@ def git(*args):
         encoding="utf-8",
         errors="replace",
     )
+
+
+def staged_large_files():
+    """列出本次暂存里的大文件（已按从大到小排序）。"""
+    listing = git("diff", "--cached", "--name-only", "--diff-filter=ACMR").stdout
+    found = []
+    for rel in listing.splitlines():
+        rel = rel.strip()
+        if not rel:
+            continue
+        path = os.path.join(REPO_ROOT, rel.replace("/", os.sep))
+        if os.path.isfile(path):
+            size = os.path.getsize(path)
+            if size >= SIZE_WARN_MB * 1024 * 1024:
+                found.append((rel, size))
+    return sorted(found, key=lambda item: -item[1])
 
 
 def main():
@@ -96,6 +117,21 @@ def main():
     if add.returncode != 0:
         print("[X] git add 失败：\n" + add.stderr.strip())
         return 1
+
+    # 2.5 体积护栏
+    big = staged_large_files()
+    too_big = [item for item in big if item[1] >= SIZE_ABORT_MB * 1024 * 1024]
+    if too_big:
+        print("[X] 有文件超过 %d MB，先处理掉再传：" % SIZE_ABORT_MB)
+        for rel, size in too_big:
+            print("      %6.1f MB  %s" % (size / 1024 / 1024, rel))
+        print("    图片先压缩（建议单张 300 KB 以内）；视频不要提交到仓库，")
+        print("    改成 B 站 / YouTube 外链，或放到 GitHub Releases、对象存储。")
+        return 1
+    if big:
+        print("[!] 这次提交里有偏大的文件（图片建议压到 300 KB 以内）：")
+        for rel, size in big:
+            print("      %6.1f MB  %s" % (size / 1024 / 1024, rel))
 
     # 3. 有改动就提交
     if git("status", "--porcelain").stdout.strip():
