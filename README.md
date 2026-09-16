@@ -12,6 +12,9 @@
 | `assets/js/script.js` | 交互：首屏大字轮换、打字机副标题、本地时钟、导航高亮、移动端菜单、欢迎弹窗 |
 | `assets/katex/` | 数学公式排版引擎（本地内置，不联网也能渲染） |
 | `tools/md2html.py` | 把 Markdown 文章转换成文章页正文的小脚本 |
+| `tools/upload.py` | 一键上传到 GitHub：add + commit + push，失败时给出对策 |
+| `games/` | 游戏目录页与游戏笔记页（`index.html` 是目录，`_template.html` 是新页面模板） |
+| `assets/js/games.js` | 游戏列表数据，加游戏只改这一个文件 |
 
 ## 一、本地预览
 
@@ -64,6 +67,12 @@ git commit -m "更新说明"
 git push
 ```
 
+更省事的做法是用项目自带的脚本，它会自己找到 git，把上面三步一次做完：
+
+```
+python D:\mypage\tools\upload.py "更新说明"
+```
+
 推送后 GitHub Pages 会自动重新发布，大约 1 分钟后线上就会更新。
 
 只改文字内容的话，也可以直接在 GitHub 网页上打开对应文件，点铅笔图标编辑，然后 `Commit changes`，效果一样。
@@ -107,14 +116,41 @@ python tools/md2html.py 你的文章.md posts/2026-09-16-long-text-render-test.h
    导航、页脚和公式渲染都不受影响。
 4. 最后在主页「02 / WRITING」里对应的栏目加一行链接指向这个文件。
 
-## 六、关于国内访问
+## 六、给游戏加笔记
+
+游戏目录在 `games/index.html`，卡片由 `assets/js/games.js` 里的数组生成。
+
+**加一个游戏**：打开 `assets/js/games.js`，照抄一行改成你的内容：
+
+```js
+{ title: "游戏名", subtitle: "English Name", tag: "类型", page: "", cover: "" }
+```
+
+`page` 留空时卡片显示「待写」；写好笔记页后把文件名填进去
+（例如 `"dyson-sphere-program.html"`），卡片就会变成可点击的。
+
+**给一个游戏写笔记**：
+
+1. 复制 `games/_template.html`，改名成英文短名，例如 `games/dyson-sphere-program.html`。
+2. 把标题和正文换成你的内容。
+3. 图片和视频放进 `games/media/`，页面里用 `media/xxx.jpg` 这样的相对路径引用。
+4. 回到 `assets/js/games.js`，把该游戏的 `page` 填上文件名。
+
+模板里已经备好封面图、图集和视频位：
+
+- 图集用 `<div class="gallery">` 包住若干 `<figure>`
+- 自己录的视频：`<div class="media-video"><video controls src="media/clip.mp4"></video></div>`
+- B 站 / YouTube：把 `<iframe>` 放进 `<div class="media-video">`，模板注释里有现成写法
+- 视频建议压到 1080p 以内再传，单个文件不要超过 100 MB
+
+## 七、关于国内访问
 
 - `博客园` 是博客平台，写文章很方便，但不能直接托管这个自定义页面；它更像是内容社区。
 - GitHub Pages 在国内部分网络下速度一般，偶尔不稳定。
 - 如果主要给国内的朋友看，可以考虑：Gitee Pages（需实名认证）、腾讯云 CloudBase 静态托管、阿里云 OSS 静态网站托管。
 - 想用自己的域名（比如 `myname.com`），上面这些平台都支持绑定，但要先买域名；用国内服务器/CDN 通常还需要 ICP 备案。
 
-## 七、GitHub 常用操作速查
+## 八、GitHub 常用操作速查
 
 > 💡 提示：如果终端提示 `无法将“git”项识别为 cmdlet…`，说明这台电脑还没装 Git，
 > 或者安装时没勾选「加入 PATH」。到 <https://git-scm.com/download/win> 下载安装，
@@ -137,7 +173,7 @@ git log --oneline     查看提交历史
 - **分支（Branch）**：并行的开发线，主分支一般叫 `main`。
 - **远程（Remote）**：GitHub 上的那份仓库，用 `origin` 表示。
 
-## 八、VS Code 工作区配置
+## 九、VS Code 工作区配置
 
 本项目已经配好一套 VS Code 设置，换电脑或重新打开时直接生效，不用再手动调。
 
@@ -160,7 +196,7 @@ git log --oneline     查看提交历史
 > 说明：本地预览任务依赖电脑上已安装 Python（本机为 `D:\python\python.exe`）。
 > 如果提示找不到 `python`，把 `python` 换成完整路径，或用第一节里说的双击 `index.html` 的方式预览。
 
-## 九、视觉与动效说明（参考 ansyn.me 归纳）
+## 十、视觉与动效说明（参考 ansyn.me 归纳）
 
 这一版的视觉参考了 <https://ansyn.me/> 的做法：**颜色极少、字号极大、用等宽小字和线条做细节**。
 

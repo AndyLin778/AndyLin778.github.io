@@ -449,6 +449,155 @@ a {
   color: var(--muted);
 }
 
+/* ===== 游戏目录 ===== */
+/* 目录页比文章页宽一些，方便一行放多张卡片 */
+.post-shell--wide {
+  width: min(100% - 40px, 1080px);
+}
+
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+  gap: 20px;
+}
+
+.game-card {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  transition: transform 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+
+/* 没有封面图时，用游戏名首字占位 */
+.game-cover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--paper-deep);
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+
+.game-cover img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.game-body {
+  flex: 1;
+  padding: 14px 16px 12px;
+}
+
+.game-title {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  transition: color 0.25s var(--ease);
+}
+
+.game-sub {
+  margin-top: 4px;
+  color: var(--muted);
+}
+
+.game-tag {
+  margin-top: 8px;
+  color: var(--muted);
+}
+
+.game-state {
+  padding: 10px 16px 12px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+}
+
+@media (hover: hover) {
+  a.game-card.is-ready:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+  }
+
+  a.game-card.is-ready:hover .game-title {
+    color: var(--accent);
+  }
+}
+
+/* ===== 游戏页里的媒体：视频 / 图集 ===== */
+/* 视频：保持 16:9，自己传的视频用 <video>，B 站 / YouTube 用 <iframe> */
+.media-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  margin-block: 1.6em;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: #101010;
+}
+
+.media-video iframe,
+.media-video video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* 图集：一行自动排几张 */
+.gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+  gap: 12px;
+  margin-block: 1.6em;
+}
+
+.gallery figure {
+  margin: 0;
+}
+
+.gallery img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border: 1px solid var(--line);
+}
+
+.gallery figcaption {
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+
+@media (max-width: 760px) {
+  .game-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 14px;
+  }
+
+  .game-cover {
+    font-size: 24px;
+  }
+
+  .game-body {
+    padding: 12px 12px 10px;
+  }
+
+  .game-state {
+    padding: 8px 12px 10px;
+  }
+}
+
 /* ===== 01 关于 ===== */
 .about-grid {
   display: grid;
@@ -468,11 +617,17 @@ a {
   border-top: 1px solid var(--line);
 }
 
-.about-list li {
+.about-list li,
+.cat-list li {
   padding: 12px 0;
   border-bottom: 1px solid var(--line);
   color: var(--muted);
   letter-spacing: 0.04em;
+}
+
+.cat-list {
+  list-style: none;
+  border-top: 1px solid var(--line);
 }
 
 /* ===== 02 项目：编号列表（模仿 ansyn 的 01 WORK 行） ===== */

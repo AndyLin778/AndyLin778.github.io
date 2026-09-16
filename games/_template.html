@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="游戏笔记 - 随笔、攻略与截图">
+  <meta name="theme-color" content="#fdfdfd">
+  <title>游戏名 · 游戏笔记 · 你的名字</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+
+  <script>
+    document.documentElement.classList.add("js");
+    try {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.setAttribute("data-reduced", "");
+      }
+    } catch (error) {
+      /* 浏览器不支持 matchMedia 时按正常动效处理 */
+    }
+  </script>
+</head>
+<body class="page-post">
+
+  <!--
+    ==========================================================
+    单个游戏的笔记页模板
+
+    用法：
+      1. 复制这个文件，改名成英文短名，例如 dyson-sphere-program.html
+      2. 把下面的「游戏名」等信息换成真实内容
+      3. 图片放进 games/media/ 目录，用相对路径引用
+      4. 最后回到 assets/js/games.js，把对应那行的 page 填上文件名，
+         目录里的卡片就会变成可点击的
+    ==========================================================
+  -->
+
+  <a class="skip-link mono" href="#article">跳到正文 ↓</a>
+
+  <header class="navbar">
+    <div class="shell nav-shell">
+      <a href="../index.html" class="brand">
+        <span class="brand-name">你的名字</span><span class="brand-dot">.</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="页面导航">
+        <a href="../index.html#work" class="nav-link">项目</a>
+        <a href="../index.html#writing" class="nav-link">文章</a>
+        <a href="../index.html#research" class="nav-link">科研</a>
+        <a href="../index.html#games" class="nav-link is-active">游戏</a>
+      </nav>
+
+      <span class="nav-clock mono" id="navClock" aria-hidden="true">LOCAL --:--</span>
+
+      <button class="nav-toggle" id="navToggle" type="button"
+              aria-label="切换导航菜单" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article id="article" class="post">
+      <div class="post-shell">
+
+        <header class="post-head">
+          <p class="post-meta mono">GAME / 类型标签 · 在玩</p>
+          <h1 class="post-title">游戏名</h1>
+          <p class="post-lede">一句话概括：这个游戏在玩什么、你为什么想写它。</p>
+        </header>
+
+        <div class="prose">
+
+          <!-- ---------- 封面图（不需要就整段删掉）---------- -->
+          <figure>
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1600' height='900'%3E%3Crect width='1600' height='900' fill='%23f4f4f4'/%3E%3Ctext x='800' y='470' font-family='monospace' font-size='42' fill='%23666666' text-anchor='middle'%3ECOVER 16:9%3C/text%3E%3C/svg%3E"
+                 alt="游戏名 封面">
+            <figcaption>FIG.01 — 封面或主界面截图</figcaption>
+          </figure>
+
+          <h2>随笔</h2>
+          <p>
+            这里写你的感想。段落、<strong>加粗</strong>、<em>斜体</em>、
+            <a href="../index.html">链接</a>、行内代码 <code>都是支持的</code>。
+          </p>
+
+          <!-- ---------- 图集：一行自动排几张，图片放进 games/media/ ---------- -->
+          <h2>截图</h2>
+          <div class="gallery">
+            <figure>
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23f4f4f4'/%3E%3Ctext x='400' y='315' font-family='monospace' font-size='30' fill='%23666666' text-anchor='middle'%3ESHOT 01%3C/text%3E%3C/svg%3E"
+                   alt="截图 1">
+              <figcaption>FIG.02 — 说明文字</figcaption>
+            </figure>
+            <figure>
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23f4f4f4'/%3E%3Ctext x='400' y='315' font-family='monospace' font-size='30' fill='%23666666' text-anchor='middle'%3ESHOT 02%3C/text%3E%3C/svg%3E"
+                   alt="截图 2">
+              <figcaption>FIG.03 — 说明文字</figcaption>
+            </figure>
+            <figure>
+              <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='600'%3E%3Crect width='800' height='600' fill='%23f4f4f4'/%3E%3Ctext x='400' y='315' font-family='monospace' font-size='30' fill='%23666666' text-anchor='middle'%3ESHOT 03%3C/text%3E%3C/svg%3E"
+                   alt="截图 3">
+              <figcaption>FIG.04 — 说明文字</figcaption>
+            </figure>
+          </div>
+
+          <!-- ---------- 视频 ----------
+               自己录的视频：把文件放进 games/media/，用下面这种写法
+               <div class="media-video">
+                 <video controls preload="metadata" src="media/clip.mp4"></video>
+               </div>
+          -->
+          <h2>视频</h2>
+          <p>自己录的视频（把 <code>media/clip.mp4</code> 换成你的文件）：</p>
+          <div class="media-video">
+            <video controls preload="metadata" src="media/clip.mp4"></video>
+          </div>
+
+          <!--
+               嵌入 B 站视频：把 bvid 换成视频号即可（BV 开头那串）
+               <div class="media-video">
+                 <iframe src="//player.bilibili.com/player.html?bvid=BV1xx411c7mD&high_quality=1"
+                         scrolling="no" allowfullscreen="true"
+                         sandbox="allow-top-navigation allow-same-origin allow-forms allow-scripts"></iframe>
+               </div>
+
+               嵌入 YouTube：把 VIDEO_ID 换成视频 ID
+               <div class="media-video">
+                 <iframe src="https://www.youtube.com/embed/VIDEO_ID"
+                         allow="accelerometer; clipboard-write; encrypted-media; picture-in-picture"
+                         allowfullscreen></iframe>
+               </div>
+          -->
+
+          <h2>攻略 / 心得</h2>
+          <p>
+            这一节可以写具体的玩法思路。想加小标题就用 <code>&lt;h3&gt;</code>，
+            想做要点列表就用 <code>&lt;ul&gt;</code> / <code>&lt;ol&gt;</code>。
+          </p>
+
+          <h3>要点</h3>
+          <ul>
+            <li>第一个要点</li>
+            <li>第二个要点</li>
+          </ul>
+
+        </div>
+
+        <footer class="post-foot">
+          <a class="post-back mono" href="index.html">← 回到游戏目录</a>
+        </footer>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+
+      <div class="contact-list footer-contact">
+        <a class="contact-row reveal" href="https://x.com/Andy_Lin778" target="_blank" rel="noopener">
+          <span class="contact-label mono">X / TWITTER</span>
+          <span class="contact-value">@Andy_Lin778</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="https://github.com/AndyLin778" target="_blank" rel="noopener">
+          <span class="contact-label mono">GITHUB</span>
+          <span class="contact-value">github.com/AndyLin778</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="mailto:andyzhou1314520@gmail.com">
+          <span class="contact-label mono">GMAIL</span>
+          <span class="contact-value">andyzhou1314520@gmail.com</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="mailto:3289413901@qq.com">
+          <span class="contact-label mono">QQ MAIL</span>
+          <span class="contact-value">3289413901@qq.com</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="footer-shell mono">
+        <span>© <span id="year">2026</span> 你的名字</span>
+        <span class="footer-note">HTML / CSS / JavaScript 手写 · 无构建工具</span>
+        <span id="footerClock">LOCAL --:--:--</span>
+        <a href="#article" class="footer-top">回到顶部 ↑</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="../assets/js/script.js"></script>
+</body>
+</html>
