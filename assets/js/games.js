@@ -13,21 +13,21 @@
 
 const GAMES = [
   // ---- 第一组（截图里的「11」分类）----
-  { title: "戴森球计划",              subtitle: "Dyson Sphere Program",            tag: "模拟 / 建造",   page: "", cover: "" },
-  { title: "饥荒联机版",              subtitle: "Don't Starve Together",           tag: "生存 / 联机",   page: "", cover: "" },
-  { title: "缺氧",                    subtitle: "Oxygen Not Included",             tag: "模拟 / 经营",   page: "", cover: "" },
-  { title: "深岩银河",                subtitle: "Deep Rock Galactic",              tag: "合作 / 射击",   page: "", cover: "" },
-  { title: "英雄联盟",                subtitle: "League of Legends",               tag: "MOBA / 竞技",   page: "", cover: "" },
-  { title: "Counter-Strike 2",        subtitle: "CS2",                             tag: "射击 / 竞技",   page: "", cover: "" },
-  { title: "Grounded",                subtitle: "禁闭求生",                        tag: "生存 / 合作",   page: "", cover: "" },
+  { title: "戴森球计划",              subtitle: "Dyson Sphere Program",  tag: "模拟 / 建造",   page: "", cover: "media/covers/dyson-sphere-program.jpg" },
+  { title: "饥荒联机版",              subtitle: "Don't Starve Together", tag: "生存 / 联机",   page: "", cover: "media/covers/dont-starve-together.jpg" },
+  { title: "缺氧",                    subtitle: "Oxygen Not Included",   tag: "模拟 / 经营",   page: "", cover: "media/covers/oxygen-not-included.jpg" },
+  { title: "深岩银河",                subtitle: "Deep Rock Galactic",    tag: "合作 / 射击",   page: "", cover: "media/covers/deep-rock-galactic.jpg" },
+  { title: "英雄联盟",                subtitle: "League of Legends",     tag: "MOBA / 竞技",   page: "", cover: "media/covers/league-of-legends.jpg" },
+  { title: "Counter-Strike 2",        subtitle: "CS2",                   tag: "射击 / 竞技",   page: "", cover: "media/covers/counter-strike-2.jpg" },
+  { title: "Grounded",                subtitle: "禁闭求生",              tag: "生存 / 合作",   page: "", cover: "media/covers/grounded.jpg" },
 
   // ---- 未分类 ----
-  { title: "逃离鸭科夫",              subtitle: "Escape From Duckov",              tag: "射击 / 撤离",   page: "", cover: "" },
-  { title: "ASTRONEER",               subtitle: "异星探险家",                      tag: "探索 / 建造",   page: "", cover: "" },
-  { title: "Project Zomboid",         subtitle: "僵尸毁灭工程",                    tag: "生存 / 沙盒",   page: "", cover: "" },
-  { title: "Raft",                    subtitle: "木筏求生",                        tag: "生存 / 合作",   page: "", cover: "" },
-  { title: "Sid Meier's Civilization VI", subtitle: "文明六",                       tag: "策略 / 回合制", page: "", cover: "" },
-  { title: "Stardew Valley",          subtitle: "星露谷物语",                      tag: "模拟 / 经营",   page: "", cover: "" }
+  { title: "逃离鸭科夫",              subtitle: "Escape From Duckov",    tag: "射击 / 撤离",   page: "", cover: "media/covers/escape-from-duckov.jpg" },
+  { title: "ASTRONEER",               subtitle: "异星探险家",            tag: "探索 / 建造",   page: "", cover: "media/covers/astroneer.jpg" },
+  { title: "Project Zomboid",         subtitle: "僵尸毁灭工程",          tag: "生存 / 沙盒",   page: "", cover: "media/covers/project-zomboid.jpg" },
+  { title: "Raft",                    subtitle: "木筏求生",              tag: "生存 / 合作",   page: "", cover: "media/covers/raft.jpg" },
+  { title: "Sid Meier's Civilization VI", subtitle: "文明六",             tag: "策略 / 回合制", page: "", cover: "media/covers/civilization-vi.jpg" },
+  { title: "Stardew Valley",          subtitle: "星露谷物语",            tag: "模拟 / 经营",   page: "", cover: "media/covers/stardew-valley.jpg" }
 ];
 
 // ============================================================
