@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="从 AI 使用者到 AI 系统构建者 - 一个普通 AI 使用者，如何从使用 AI，逐渐走向理解 AI 系统，并尝试搭一套属于自己的 AI 工作环境">
+  <meta name="theme-color" content="#fdfdfd">
+  <title>从 AI 使用者到 AI 系统构建者 · Andy.Z</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <link rel="stylesheet" href="../assets/katex/katex.min.css">
+
+  <script>
+    document.documentElement.classList.add("js");
+    try {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.setAttribute("data-reduced", "");
+      }
+    } catch (error) {
+      /* 浏览器不支持 matchMedia 时按正常动效处理 */
+    }
+  </script>
+</head>
+<body class="page-post">
+
+  <a class="skip-link mono" href="#article">跳到正文 ↓</a>
+
+  <!-- 顶部导航 -->
+  <header class="navbar">
+    <div class="shell nav-shell">
+      <a href="../index.html" class="brand">
+        <span class="brand-name">Andy.Z</span><span class="brand-dot">.</span>
+      </a>
+
+      <nav class="nav-links" id="navLinks" aria-label="页面导航">
+        <a href="../index.html#work" class="nav-link">项目</a>
+        <a href="../index.html#writing" class="nav-link is-active">文章</a>
+        <a href="../index.html#research" class="nav-link">科研</a>
+        <a href="../index.html#games" class="nav-link">游戏</a>
+      </nav>
+
+      <span class="nav-clock mono" id="navClock" aria-hidden="true">LOCAL --:--</span>
+
+      <button class="nav-toggle" id="navToggle" type="button"
+              aria-label="切换导航菜单" aria-expanded="false" aria-controls="navLinks">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <article id="article" class="post">
+      <div class="post-shell">
+
+        <!-- 文章头部：日期 / 标题 / 导语 -->
+        <header class="post-head">
+          <p class="post-meta mono">2026.09.17 · 杂谈 · 工程</p>
+          <h1 class="post-title">从 AI 使用者到 AI 系统构建者</h1>
+          <p class="post-lede">
+            一个普通 AI 使用者，如何从使用 AI，逐渐走向理解 AI 系统，
+            并尝试搭一套属于自己的 AI 工作环境。
+          </p>
+        </header>
+
+        <!-- 正文：由 docx 转换而来；.prose-tight 让逐行的短句排得更紧凑 -->
+        <div class="prose">
+<!-- ARTICLE:START -->
+<h2>从 AI 使用者到 AI 系统构建者：Dual-Agent-Harness 的诞生</h2>
+
+<h3>起点：当 AI 不再只是一个聊天窗口</h3>
+
+<p>最开始接触人工智能时，我和大多数人一样，把 AI 当作一个更加聪明的搜索工具或者问答助手。</p>
+
+<p>遇到问题：</p>
+
+<ul><li>不理解的数学概念；</li><li>写论文遇到困难；</li><li>编程出现 bug；</li><li>想设计一个游戏机制；</li></ul>
+
+<p>打开聊天窗口，输入问题，然后等待回答。</p>
+
+<p>这种方式已经非常强大。</p>
+
+<p>但是随着使用时间增加，我逐渐发现一个问题：</p>
+
+<p><strong>AI 的能力越来越强，但是人与 AI 的协作方式似乎仍然停留在最初阶段。</strong></p>
+
+<p>大部分时候，我们依然是在：</p>
+
+<pre><code>人提出问题
+    ↓
+AI 给出回答
+    ↓
+对话结束</code></pre>
+
+<p>这种模式下，AI 更像一个「高级工具」。</p>
+
+<p>但是如果 AI 真正成为未来生产力的一部分，它应该不只是回答一次问题，而应该能够：</p>
+
+<ul><li>理解长期目标；</li><li>记住项目背景；</li><li>主动拆解任务；</li><li>执行具体工作；</li><li>根据结果调整方案。</li></ul>
+
+<p>也就是说：</p>
+
+<blockquote><p>AI 不应该只是一个聊天对象，而应该成为一个长期合作的智能系统。</p></blockquote>
+
+<p>这成为我开始探索 Agent 架构的起点。</p>
+
+<hr>
+
+<h2>为什么需要多个 AI？</h2>
+
+<p>在实际使用过程中，我发现不同模型之间存在明显的特点差异。</p>
+
+<p>有些模型更适合：</p>
+
+<ul><li>理解复杂问题；</li><li>进行逻辑分析；</li><li>制定计划；</li><li>发现错误。</li></ul>
+
+<p>而有些模型更适合：</p>
+
+<ul><li>修改大量代码；</li><li>操作文件；</li><li>快速执行任务；</li><li>进行工程实现。</li></ul>
+
+<p>如果强行让一个 AI 完成所有事情，实际上并不能发挥它最大的优势。</p>
+
+<p>这让我想到软件工程中的团队协作：</p>
+
+<p>一个大型项目不会让一个程序员完成所有事情。</p>
+
+<p>通常会有：</p>
+
+<ul><li>架构设计者；</li><li>开发工程师；</li><li>测试人员；</li><li>产品负责人。</li></ul>
+
+<p>那么 AI 是否也可以采用类似结构？</p>
+
+<p>于是产生了最初的想法：</p>
+
+<pre data-lang="markdown"><code>            人类
+
+              |
+
+              |
+
+        AI Planner
+
+      负责思考和规划
+
+              |
+
+              |
+
+          Task Plan
+
+              |
+
+              |
+
+       AI Executor
+
+       负责执行任务
+
+              |
+
+              |
+
+        Result Report
+
+              |
+
+              |
+
+       AI Reviewer
+
+       负责检查和改进</code></pre>
+
+<p>在这个体系中：</p>
+
+<p>GPT 更像一个架构师。</p>
+
+<p>DeepSeek 更像一个工程执行者。</p>
+
+<p>它们不是互相替代，而是形成协作关系。</p>
+
+<hr>
+
+<h2>第一个真正的问题：如何让两个 AI 共存？</h2>
+
+<p>最初我认为这个问题很简单：</p>
+
+<p>安装两个客户端即可。</p>
+
+<p>但是实际操作后发现，现代软件远比想象复杂。</p>
+
+<p>一个应用程序并不是只有一个 <code>.exe</code> 文件。</p>
+
+<p>它还包含：</p>
+
+<pre data-lang="diff"><code>程序本体
+
++
+
+配置文件
+
++
+
+用户身份
+
++
+
+缓存数据
+
++
+
+数据库
+
++
+
+插件
+
++
+
+登录状态
+
++
+
+系统注册信息</code></pre>
+
+<p>如果两个 AI 客户端直接共用这些内容，就会产生各种问题：</p>
+
+<ul><li>登录状态互相影响；</li><li>聊天记录混合；</li><li>项目列表冲突；</li><li>插件环境污染；</li><li>桌面图标无法区分。</li></ul>
+
+<p>这让我第一次真正意识到：</p>
+
+<blockquote><p>软件运行的本质，不只是代码，而是代码运行时所处的整个环境。</p></blockquote>
+
+<hr>
+
+<h2>Windows 软件隔离的探索</h2>
+
+<p>为了实现两个独立 AI 环境，我开始研究 Windows 应用运行机制。</p>
+
+<p>最终发现，需要解决三个层面的问题。</p>
+
+<hr>
+
+<h3>第一层：配置隔离</h3>
+
+<p>首先需要让两个 AI 拥有不同的配置环境。</p>
+
+<p>Codex 使用：</p>
+
+<pre><code>CODEX_HOME</code></pre>
+
+<p>作为主要配置目录。</p>
+
+<p>因此：</p>
+
+<p>官方 GPT：</p>
+
+<pre data-lang="yaml"><code>C:\Users\User\.codex</code></pre>
+
+<p>DeepSeek：</p>
+
+<pre data-lang="yaml"><code>C:\Users\User\.codex-deepseek</code></pre>
+
+<p>两个目录分别保存：</p>
+
+<ul><li>模型配置；</li><li>项目信息；</li><li>插件；</li><li>用户状态。</li></ul>
+
+<p>这样两个 Agent 才真正拥有自己的「大脑」。</p>
+
+<hr>
+
+<h3>第二层：数据隔离</h3>
+
+<p>仅仅分开配置还不够。</p>
+
+<p>现代应用大量依赖缓存和数据库。</p>
+
+<p>例如：</p>
+
+<ul><li>web-data；</li><li>session；</li><li>cache；</li><li>browser 数据。</li></ul>
+
+<p>因此需要进一步建立：</p>
+
+<pre><code>Official Profile
+
+↓
+
+OpenAI 数据环境
+
+
+DeepSeek Profile
+
+↓
+
+DeepSeek 数据环境</code></pre>
+
+<p>避免两个实例互相读取历史状态。</p>
+
+<hr>
+
+<h3>第三层：系统身份隔离</h3>
+
+<p>最后一个问题是 Windows 层面。</p>
+
+<p>虽然两个窗口看起来不同，但是系统可能认为：</p>
+
+<p>「这是同一个应用。」</p>
+
+<p>于是任务栏会自动合并。</p>
+
+<p>为了解决这个问题，需要使用：</p>
+
+<pre><code>AppUserModelID</code></pre>
+
+<p>告诉 Windows：</p>
+
+<p>这两个程序属于不同身份。</p>
+
+<p>最终效果：</p>
+
+<pre><code>ChatGPT
+
+🐟 DeepSeek Codex</code></pre>
+
+<p>成为两个独立的软件入口。</p>
+
+<hr>
+
+<h2>从解决问题到理解系统</h2>
+
+<p>这个项目最大的收获，并不是写出了多少代码。</p>
+
+<p>而是在解决问题过程中，我开始重新理解软件。</p>
+
+<p>以前：</p>
+
+<blockquote><p>软件就是一个程序。</p></blockquote>
+
+<p>现在：</p>
+
+<blockquote><p>软件是程序、环境、状态和系统之间的共同作用。</p></blockquote>
+
+<p>一个看似简单的问题：</p>
+
+<p>「为什么两个 AI 不能同时存在？」</p>
+
+<p>背后涉及：</p>
+
+<ul><li>操作系统；</li><li>用户权限；</li><li>进程管理；</li><li>文件系统；</li><li>网络代理；</li><li>应用身份；</li><li>配置管理。</li></ul>
+
+<p>这也是软件工程真正复杂的地方。</p>
+
+<hr>
+
+<h2>Agent 系统的下一步</h2>
+
+<p>Dual-Agent-Harness 目前只是一个起点。</p>
+
+<p>它解决的是：</p>
+
+<blockquote><p>如何让多个 AI 在同一个电脑环境中独立运行。</p></blockquote>
+
+<p>但是未来真正重要的问题是：</p>
+
+<p>如何让 AI 之间形成稳定协作。</p>
+
+<p>例如：</p>
+
+<pre><code>用户提出目标
+
+↓
+
+Planner Agent
+
+分析任务
+
+↓
+
+Executor Agent
+
+执行任务
+
+↓
+
+Reviewer Agent
+
+检查结果
+
+↓
+
+Memory Agent
+
+保存经验</code></pre>
+
+<p>最终形成一个属于个人的 AI 工作系统。</p>
+
+<hr>
+
+<h2>为什么想分享这个项目？</h2>
+
+<p>很多人认为 AI 的未来是：</p>
+
+<p>「拥有更强大的模型。」</p>
+
+<p>但我认为另一个方向同样重要：</p>
+
+<blockquote><p>普通人如何拥有属于自己的 AI 系统。</p></blockquote>
+
+<p>未来每个人可能都拥有自己的：</p>
+
+<ul><li>AI 助手；</li><li>AI 工程师；</li><li>AI 研究伙伴；</li><li>AI 管理系统。</li></ul>
+
+<p>但是要实现这一点，不只是需要更强的模型，也需要普通用户能够理解：</p>
+
+<p>AI 如何运行。</p>
+
+<p>AI 如何组织。</p>
+
+<p>AI 如何成为一个真正属于自己的工具。</p>
+
+<hr>
+
+<h2>写在最后</h2>
+
+<p>这个项目最初只是一个非常实际的问题：</p>
+
+<p>「如何让两个 AI 客户端互不干扰？」</p>
+
+<p>但是在解决这个问题的过程中，我逐渐发现：</p>
+
+<p>这其实是一个关于未来人机协作方式的小型探索。</p>
+
+<p>从复制一个客户端，到理解 Windows 系统，再到设计 Agent 架构。</p>
+
+<p>这个过程让我意识到：</p>
+
+<p>未来的软件开发，也许不只是人与代码的关系。</p>
+
+<p>而是：</p>
+
+<pre><code>人
+
+↓
+
+智能系统
+
+↓
+
+多个 AI Agent
+
+↓
+
+完成复杂目标</code></pre>
+
+<p>Dual-Agent-Harness 是我迈出的第一步。</p>
+
+<p>它不是一个终点。</p>
+
+<p>而是建立个人 AI 工作系统的开始。</p>
+<!-- ARTICLE:END -->
+        </div>
+
+        <footer class="post-foot">
+          <a class="post-back mono" href="../index.html#writing">← 回到文章列表</a>
+        </footer>
+
+      </div>
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="shell">
+
+      <div class="contact-list footer-contact">
+        <a class="contact-row reveal" href="https://x.com/Andy_Lin778" target="_blank" rel="noopener">
+          <span class="contact-label mono">X / TWITTER</span>
+          <span class="contact-value">@Andy_Lin778</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="https://github.com/AndyLin778" target="_blank" rel="noopener">
+          <span class="contact-label mono">GITHUB</span>
+          <span class="contact-value">github.com/AndyLin778</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="mailto:andyzhou1314520@gmail.com">
+          <span class="contact-label mono">GMAIL</span>
+          <span class="contact-value">andyzhou1314520@gmail.com</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+        <a class="contact-row reveal" href="mailto:3289413901@qq.com">
+          <span class="contact-label mono">QQ MAIL</span>
+          <span class="contact-value">3289413901@qq.com</span>
+          <span class="row-arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <div class="footer-shell mono">
+        <span>© <span id="year">2026</span> Andy.Z</span>
+        <span class="footer-note">HTML / CSS / JavaScript 手写 · 无构建工具</span>
+        <span id="footerClock">LOCAL --:--:--</span>
+        <a href="#article" class="footer-top">回到顶部 ↑</a>
+      </div>
+
+    </div>
+  </footer>
+
+  <script src="../assets/js/script.js"></script>
+  <script src="../assets/katex/katex.min.js"></script>
+  <script src="../assets/katex/contrib/auto-render.min.js"></script>
+  <script>
+    // 数学公式渲染：$$...$$ 与 \[...\] 为独立公式行，\(...\) 为行内公式
+    if (window.renderMathInElement) {
+      renderMathInElement(document.body, {
+        delimiters: [
+          { left: "$$", right: "$$", display: true },
+          { left: "\\[", right: "\\]", display: true },
+          { left: "\\(", right: "\\)", display: false }
+        ],
+        ignoredTags: ["script", "noscript", "style", "textarea", "pre", "code", "option"],
+        throwOnError: false
+      });
+    }
+  </script>
+</body>
+</html>

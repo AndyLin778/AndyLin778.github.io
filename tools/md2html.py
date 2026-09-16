@@ -19,6 +19,7 @@
     **粗体**  *斜体*          `行内代码`
     ``` 代码块 ```            | 表格 |（含 :-- / --: / :-: 对齐）
     > 引用                    --- 分隔线
+    - 无序列表 / 1. 有序列表
     $$ 独立公式 $$            \\( 行内公式 \\)
 """
 
@@ -63,13 +64,15 @@ def is_block_start(line):
         or t.startswith(">")
         or t in ("---", "***", "___")
         or re.match(r"^#{1,6}\s", t) is not None
+        or re.match(r"^[-*+]\s+", t) is not None
+        or re.match(r"^\d+[.)]\s+", t) is not None
     )
 
 
 def convert(md_text):
     lines = md_text.replace("\r\n", "\n").split("\n")
     out = []
-    stats = {"h": 0, "math": 0, "table": 0, "code": 0, "quote": 0, "p": 0}
+    stats = {"h": 0, "math": 0, "table": 0, "code": 0, "quote": 0, "list": 0, "p": 0}
     i, n = 0, len(lines)
 
     while i < n:
@@ -184,6 +187,28 @@ def convert(md_text):
             stats["table"] += 1
             continue
 
+        # ---------- 列表 ----------
+        if re.match(r"^[-*+]\s+", s) or re.match(r"^\d+[.)]\s+", s):
+            ordered = re.match(r"^\d+[.)]\s+", s) is not None
+            items = []
+            while i < n:
+                t = lines[i].strip()
+                if re.match(r"^[-*+]\s+", t) or re.match(r"^\d+[.)]\s+", t):
+                    items.append(re.sub(r"^([-*+]|\d+[.)])\s+", "", t))
+                    i += 1
+                elif t and items and lines[i][:1] in (" ", "\t") and not is_block_start(lines[i]):
+                    items[-1] = items[-1] + " " + t
+                    i += 1
+                else:
+                    break
+            tag = "ol" if ordered else "ul"
+            out.append(
+                "<%s>%s</%s>"
+                % (tag, "".join("<li>%s</li>" % inline(esc(x)) for x in items), tag)
+            )
+            stats["list"] += 1
+            continue
+
         # ---------- 段落 ----------
         buf = []
         while i < n and lines[i].strip() and not is_block_start(lines[i]):
@@ -215,7 +240,7 @@ def main():
     print("正文 %d 字符" % len(body))
     print(
         "标题 %(h)d · 公式 %(math)d · 表格 %(table)d · 代码块 %(code)d · "
-        "引用 %(quote)d · 段落 %(p)d" % stats
+        "引用 %(quote)d · 列表 %(list)d · 段落 %(p)d" % stats
     )
 
 
