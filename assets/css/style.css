@@ -1168,6 +1168,17 @@ html[data-reduced] .reveal {
   border-top: 1px solid var(--line);
 }
 
+/* ---- 逐行短句的小说排版：在 .prose 上再加 .prose-tight 即可 ----
+   这类文本一行一句，用默认段间距会拉得太开，所以收紧段落间距；
+   场景之间仍用 <hr> 分隔，保留原有的呼吸感。 */
+.prose-tight > * + * {
+  margin-top: 0.5em;
+}
+
+.prose-tight hr {
+  margin: 2em 0;
+}
+
 .post-back {
   color: var(--muted);
   transition: color 0.25s var(--ease);
