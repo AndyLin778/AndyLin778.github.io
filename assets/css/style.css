@@ -439,6 +439,45 @@ a {
   color: var(--muted);
 }
 
+/* 项目下的子文章：挂在项目条目下面，用缩进和一条细线表示从属关系 */
+.subentry-list {
+  list-style: none;
+  margin-left: 2px;
+  padding: 2px 0 14px 15px;
+  border-left: 1px solid var(--line);
+}
+
+.subentry {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 6px 0;
+}
+
+.subentry-index {
+  flex: none;
+  color: var(--muted);
+  transition: color 0.3s var(--ease);
+}
+
+.subentry-title {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--muted);
+  transition: transform 0.3s var(--ease), color 0.3s var(--ease);
+}
+
+@media (hover: hover) {
+  .subentry:hover .subentry-title {
+    color: var(--accent);
+    transform: translateX(3px);
+  }
+
+  .subentry:hover .subentry-index {
+    color: var(--accent);
+  }
+}
+
 /* 整栏还没有内容时的占位说明 */
 .section-empty {
   max-width: 62ch;
@@ -1255,7 +1294,7 @@ html[data-reduced] .reveal {
 /* ============================================================
    项目页（projects/）
    项目主页复用文章页的排版，另外补两种块：
-   .proj-cards 放「两条线 / 两份文档」的卡片，.proj-log 放实践记录。
+   .proj-cards 放项目下面两份文档的卡片，.proj-log 放实践记录。
    ============================================================ */
 .proj-cards {
   display: grid;
