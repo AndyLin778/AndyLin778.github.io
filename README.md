@@ -13,6 +13,7 @@
 | `assets/katex/` | 数学公式排版引擎（本地内置，不联网也能渲染） |
 | `tools/md2html.py` | 把 Markdown 文章转换成文章页正文的小脚本 |
 | `tools/upload.py` | 一键上传到 GitHub：add + commit + push，失败时给出对策 |
+| `projects/` | 项目页目录：一个项目一个页面（`no-ai.html` 是「失去 AI 之后」） |
 | `games/` | 游戏目录页与游戏笔记页（`index.html` 是目录，`_template.html` 是新页面模板） |
 | `assets/js/games.js` | 游戏列表数据，加游戏只改这一个文件 |
 
@@ -247,6 +248,49 @@ const TYPED_LINES = ["把想法变成看得见的东西。", "持续学习，保
 - 系统开启「减少动效」（`prefers-reduced-motion: reduce`）时：大字和副标题直接显示第一句、
   扫描线隐藏、揭示动画取消（内容直接可见）。
 - 首页的大标题在 `index.html` 里用 `.sr-only` 保留了一份真实文本，方便搜索引擎和读屏软件读取。
+
+## 十一、项目页（projects/）
+
+项目栏的内容放在 `projects/` 下，一个项目一个页面。现在只有一个项目：
+
+| 文件 | 作用 |
+| --- | --- |
+| `projects/no-ai.html` | 项目主页「失去 AI 之后」：项目说明、两份文档入口、实践记录、文章出口 |
+| `projects/no-ai-memo.html` | 文档页：失去 AI 后的人工接管备忘录 |
+| `projects/no-ai-plan.html` | 文档页：以自己为主导的学习与工作计划 |
+| `projects/no-ai-memo.md` | 备忘录的 Markdown 源稿，改文字只改这个再重新生成 |
+| `projects/no-ai-plan.md` | 计划的 Markdown 源稿 |
+
+**怎么区分项目页和文章页**
+
+- 项目页放「正在发生的事」：目标、状态、记录，会一直往下加。
+- 文章页放「想清楚的一个观点」：写完就是一篇，之后改动少。
+- 同一件事可以两处都有：项目页持续更新；等想法成型了写成一篇文章放进 `posts/`，
+  再回到 `projects/no-ai.html` 的「从这里长出来的文章」一节留个链接。
+
+**往项目里加一条实践记录**
+
+打开 `projects/no-ai.html`，在 `<!-- RECORDS:START -->` 和 `<!-- RECORDS:END -->` 之间
+加一个块，并把 `<p class="proj-log-empty">还没有记录</p>` 那行删掉：
+
+```html
+<div class="proj-log-item">
+  <span class="proj-log-date mono">2026.09.20 · 无 AI，可查资料</span>
+  <p>独立做了什么；凭什么判断结果是对的；卡在哪里；下次只补哪一项。</p>
+</div>
+```
+
+**改文档正文**
+
+改 `projects/no-ai-memo.md` 或 `projects/no-ai-plan.md`，然后运行：
+
+```
+python tools/md2html.py projects/no-ai-memo.md projects/no-ai-memo.html --skip-h1
+python tools/md2html.py projects/no-ai-plan.md projects/no-ai-plan.html --skip-h1
+```
+
+脚本只替换 `<!-- ARTICLE:START -->` 和 `<!-- ARTICLE:END -->` 之间的正文。
+`--skip-h1` 表示源稿开头那行 `# 标题` 不写进正文，否则会和页头标题重复一次。
 
 ---
 

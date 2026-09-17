@@ -5,6 +5,7 @@
 
 用法：
     python tools/md2html.py 你的文章.md posts/2026-09-16-long-text-render-test.html
+    python tools/md2html.py 你的文章.md projects/no-ai-memo.html --skip-h1
 
 说明：
     目标页面里必须保留下面这两行占位标记，脚本只替换它们之间的正文：
@@ -14,6 +15,9 @@
     新增一篇文章时：把 posts/ 下现有的文章页复制一份，
     清空两个标记之间的内容，再运行上面的命令即可。
 
+    --skip-h1：跳过源文件开头的一级标题。页面标题由页头的 <h1> 提供时用它，
+    免得正文里再出现一遍同样的标题。
+
 支持的元素：
     # ~ ###### 标题           普通段落
     **粗体**  *斜体*          `行内代码`
@@ -21,6 +25,7 @@
     > 引用                    --- 分隔线
     - 无序列表 / 1. 有序列表
     $$ 独立公式 $$            \\( 行内公式 \\)
+    [文字](https://链接)      （只处理 http/https，新窗口打开）
 """
 
 import html
@@ -51,6 +56,15 @@ def inline(text):
     text = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", text)
     # 斜体（避开已经处理过的粗体星号）
     text = re.sub(r"(?<![\*\w])\*([^\*\n]+)\*(?!\*)", r"<em>\1</em>", text)
+    # 链接：只认 http/https，先抽成占位符，免得方括号、圆括号被后面的规则再碰一次
+    text = re.sub(
+        r"\[([^\]\n]+)\]\((https?://[^\s)]+)\)",
+        lambda m: hold(
+            '<a href="%s" target="_blank" rel="noopener">%s</a>'
+            % (m.group(2), m.group(1))
+        ),
+        text,
+    )
 
     return re.sub(r"\x00(\d+)\x00", lambda m: stash[int(m.group(1))], text)
 
@@ -69,8 +83,19 @@ def is_block_start(line):
     )
 
 
-def convert(md_text):
+def convert(md_text, skip_first_h1=False):
     lines = md_text.replace("\r\n", "\n").split("\n")
+
+    # --skip-h1：源稿开头的一级标题就是页面标题，页头已经显示过一次了，
+    # 这里把它清掉，避免正文重复同样的标题。
+    if skip_first_h1:
+        for k, line in enumerate(lines):
+            if not line.strip():
+                continue
+            if re.match(r"^#\s+", line.strip()):
+                lines[k] = ""
+            break
+
     out = []
     stats = {"h": 0, "math": 0, "table": 0, "code": 0, "quote": 0, "list": 0, "p": 0}
     i, n = 0, len(lines)
@@ -221,20 +246,31 @@ def convert(md_text):
 
 
 def main():
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    flags = {a for a in args if a.startswith("--")}
+    paths = [a for a in args if not a.startswith("--")]
+
+    unknown = flags - {"--skip-h1"}
+    if unknown or not paths:
+        if unknown:
+            print("未知参数：%s" % " ".join(sorted(unknown)))
         print(__doc__)
         sys.exit(1)
 
-    src = Path(sys.argv[1])
-    target = Path(sys.argv[2]) if len(sys.argv) > 2 else Path("post.html")
+    src = Path(paths[0])
+    target = Path(paths[1]) if len(paths) > 1 else Path("post.html")
 
-    body, stats = convert(src.read_text(encoding="utf-8"))
+    skip_h1 = "--skip-h1" in flags
+    body, stats = convert(src.read_text(encoding="utf-8"), skip_h1)
 
     page = target.read_text(encoding="utf-8")
     a, b = page.index(START), page.index(END)
     target.write_text(
         page[: a + len(START)] + "\n" + body + "\n" + page[b:], encoding="utf-8"
     )
+
+    if skip_h1:
+        print("已跳过源文件开头的一级标题（页面标题由页头提供）")
 
     print("已生成：%s" % target)
     print("正文 %d 字符" % len(body))

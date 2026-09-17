@@ -1250,3 +1250,107 @@ html[data-reduced] .reveal {
 }
 
 
+
+
+/* ============================================================
+   项目页（projects/）
+   项目主页复用文章页的排版，另外补两种块：
+   .proj-cards 放「两条线 / 两份文档」的卡片，.proj-log 放实践记录。
+   ============================================================ */
+.proj-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1px;
+  margin-block: 1.6em;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+
+.proj-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 22px 20px;
+  background: var(--paper);
+  transition: background 0.25s var(--ease);
+}
+
+/* 卡片整体是链接，但不要 .prose a 的下划线与强调色 */
+.prose a.proj-card {
+  color: inherit;
+  text-decoration: none;
+}
+
+.prose a.proj-card:hover {
+  background: var(--paper-deep);
+  color: inherit;
+}
+
+.proj-card-label {
+  color: var(--muted);
+}
+
+.proj-card-title {
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+}
+
+.proj-card-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--muted);
+}
+
+.proj-card-foot {
+  margin-top: auto;
+  padding-top: 6px;
+  color: var(--muted);
+}
+
+/* 实践记录：一条一条往下排，空的时候只显示一行灰字 */
+.proj-log {
+  margin-block: 1.4em;
+  border-top: 1px solid var(--line);
+}
+
+.proj-log-item {
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.proj-log-item .proj-log-date {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--muted);
+}
+
+.proj-log-item p {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.proj-log-empty {
+  padding: 18px 0;
+  color: var(--muted);
+}
+
+/* 四种记录状态的图例 */
+.proj-legend {
+  padding: 14px 16px;
+  border-left: 2px solid var(--line);
+  color: var(--muted);
+  line-height: 1.9;
+}
+
+.proj-links {
+  list-style: none;
+  padding-left: 0;
+}
+
+.proj-links li {
+  padding: 12px 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--muted);
+}
