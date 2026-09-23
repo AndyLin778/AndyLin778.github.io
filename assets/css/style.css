@@ -1393,3 +1393,32 @@ html[data-reduced] .reveal {
   border-bottom: 1px solid var(--line);
   color: var(--muted);
 }
+
+.pet-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 1.5em 0 2em;
+}
+
+.pet-preview figure {
+  flex: 1 1 180px;
+  margin: 0;
+  padding: 22px;
+  text-align: center;
+  background: var(--paper-deep);
+}
+
+.pet-preview img {
+  width: 180px;
+  height: 180px;
+  max-width: 100%;
+  object-fit: contain;
+  image-rendering: pixelated;
+}
+
+.pet-preview figcaption {
+  margin-top: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}

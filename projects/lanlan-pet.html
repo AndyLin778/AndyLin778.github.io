@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="蓝蓝双形态桌宠：下载 Windows 独立桌宠或 Codex 宠物包，查看安装和操作说明。">
+  <meta name="theme-color" content="#fdfdfd">
+  <title>蓝蓝：双形态桌宠 · Andy.Z</title>
+  <link rel="stylesheet" href="../assets/css/style.css">
+  <script>
+    document.documentElement.classList.add("js");
+    try {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        document.documentElement.setAttribute("data-reduced", "");
+      }
+    } catch (error) { /* 浏览器不支持 matchMedia 时正常显示 */ }
+  </script>
+</head>
+<body class="page-post page-project">
+  <a class="skip-link mono" href="#project">跳到正文 ↓</a>
+  <header class="navbar">
+    <div class="shell nav-shell">
+      <a href="../index.html" class="brand"><span class="brand-name">Andy.Z</span><span class="brand-dot">.</span></a>
+      <nav class="nav-links" id="navLinks" aria-label="页面导航">
+        <a href="../index.html#work" class="nav-link is-active">项目</a>
+        <a href="../index.html#writing" class="nav-link">文章</a>
+        <a href="../index.html#research" class="nav-link">科研</a>
+        <a href="../index.html#games" class="nav-link">游戏</a>
+      </nav>
+      <span class="nav-clock mono" id="navClock" aria-hidden="true">LOCAL --:--</span>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main>
+    <article id="project" class="post">
+      <div class="post-shell">
+        <header class="post-head">
+          <p class="post-meta mono">桌宠项目 · 2026.09.23</p>
+          <h1 class="post-title">蓝蓝：双形态桌宠</h1>
+          <p class="post-lede">普通形态和铁锅形态，来自拼豆图的像素造型。这里提供 Windows 独立桌宠与 Codex 宠物包两个版本。</p>
+        </header>
+
+        <div class="prose">
+          <div class="pet-preview" aria-label="蓝蓝的两种形态">
+            <figure><img src="downloads/normal-transparent.png" alt="蓝蓝普通形态" width="180" height="180"><figcaption>普通形态</figcaption></figure>
+            <figure><img src="downloads/pot-transparent.png" alt="蓝蓝铁锅形态" width="180" height="180"><figcaption>铁锅形态</figcaption></figure>
+          </div>
+
+          <h2>Windows 独立桌宠</h2>
+          <p>在 Windows 桌面上透明置顶运行。双击角色可切换形态；这个版本不读取 Codex 工作状态，运行时无需联网。</p>
+          <p><a href="downloads/lanlan-desktop-pet.zip" download>下载 Windows 桌宠 ZIP ↓</a></p>
+          <ol>
+            <li>安装 Python 3，并确保 <code>python</code> 和 <code>pythonw.exe</code> 可在命令行使用。</li>
+            <li>解压 ZIP，在解压后的 <code>lanlan-desktop-pet</code> 文件夹打开 PowerShell，运行 <code>python -m pip install -r requirements.txt</code> 安装 Pillow。</li>
+            <li>双击 <code>start-pet.vbs</code> 启动。如果系统禁用了 VBS，在同一文件夹运行 <code>pythonw .\pet.py</code>。</li>
+          </ol>
+          <ul>
+            <li><strong>双击：</strong>切换普通 / 铁锅形态，并轻轻弹跳。</li>
+            <li><strong>按住左键：</strong>拖动桌宠。</li>
+            <li><strong>右键：</strong>跳跃、摇摆、开启散步、暂停、调整大小或退出。</li>
+          </ul>
+          <p>退出时会记住形态、大小和位置。散步默认关闭，也不会设置开机启动。</p>
+
+          <h2>Codex 宠物包</h2>
+          <p>普通形态与铁锅形态是两个独立的 Codex v2 宠物选项，可在 Codex 宠物选择器中切换。</p>
+          <p><a href="downloads/lanlan-codex.zip" download>下载 Codex 宠物包 ZIP ↓</a></p>
+          <ol>
+            <li>解压 ZIP，将 <code>normal</code> 文件夹里的 <code>pet.json</code> 和 <code>spritesheet.webp</code> 复制到 <code>%USERPROFILE%\.codex\pets\lanlan-normal</code>。</li>
+            <li>将 <code>pot</code> 文件夹里的同名两个文件复制到 <code>%USERPROFILE%\.codex\pets\lanlan-pot</code>。</li>
+            <li>重启 Codex，在宠物列表中选择想用的形态。</li>
+          </ol>
+          <p>两套图集已通过 v2 结构与透明度检查。动画以弹跳、位移、眨眼和局部像素动作呈现。</p>
+          <p><a class="post-back" href="../index.html#work">← 返回项目列表</a></p>
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="footer">
+    <div class="shell"><div class="footer-shell mono">
+      <span>© <span id="year">2026</span> Andy.Z</span>
+      <span class="footer-note">HTML / CSS / JavaScript 手写 · 无构建工具</span>
+      <span id="footerClock">LOCAL --:--:--</span>
+      <a href="#project" class="footer-top">回到顶部 ↑</a>
+    </div></div>
+  </footer>
+  <script src="../assets/js/script.js"></script>
+</body>
+</html>
