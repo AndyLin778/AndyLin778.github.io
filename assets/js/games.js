@@ -22,6 +22,7 @@ const GAMES = [
   { title: "Grounded",                subtitle: "禁闭求生",              tag: "生存 / 合作",   page: "", cover: "media/covers/grounded.jpg" },
 
   // ---- 未分类 ----
+  { title: "地球末日生存",            subtitle: "Last Day on Earth: Survival", tag: "生存 / 收集", page: "last-day-on-earth.html", cover: "media/covers/last-day-on-earth.jpg" },
   { title: "逃离鸭科夫",              subtitle: "Escape From Duckov",    tag: "射击 / 撤离",   page: "", cover: "media/covers/escape-from-duckov.jpg" },
   { title: "ASTRONEER",               subtitle: "异星探险家",            tag: "探索 / 建造",   page: "", cover: "media/covers/astroneer.jpg" },
   { title: "Project Zomboid",         subtitle: "僵尸毁灭工程",          tag: "生存 / 沙盒",   page: "", cover: "media/covers/project-zomboid.jpg" },
