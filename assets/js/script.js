@@ -4,11 +4,13 @@
 //   2. 副标题打字机
 //   3. 本地时间（导航 / 首屏 / 页脚）
 //   4. 导航滚动高亮 + 移动端菜单
-//   5. 滚动揭示、欢迎弹窗、页脚年份
+//   5. 滚动揭示、页脚年份
 // ============================================================
 
 // ===== 想改内容，改这里就够了 =====
-const HERO_WORDS = ["MY PAGE", "HELLO", "2026", "WEB DEV"]; // 首屏依次打出的大字
+// 首屏依次打出的大字。播完一圈后会回头把第一句重新打出来停住，
+// 所以第一项就是访客最终看到的静止状态；长句会被 fitHeroWord 自动缩小到容器内。
+const HERO_WORDS = ["MY PAGE", "HELLO", "STAY CURIOUS", "KEEP EXPLORING"];
 const TYPED_LINES = [                                        // 副标题循环播放的句子
   "把想法变成看得见的东西。",
   "持续学习，保持好奇。",
@@ -22,7 +24,7 @@ const reduceMotion = document.documentElement.hasAttribute("data-reduced");
 //   timing：{ type 打字 / hold 整句停留 / del 退格 / pause 换句 }（毫秒）
 //   cycles：播完几轮后停住（停住时稳稳留下第一句，并把光标淡出）
 // ------------------------------------------------------------
-function makeTyper(element, lines, timing, cycles) {
+function makeTyper(element, lines, timing, cycles, onDraw) {
   if (!element) return;
 
   const finish = () => {
@@ -33,6 +35,7 @@ function makeTyper(element, lines, timing, cycles) {
   // 系统开了“减少动效”就直接显示第一句，不动
   if (reduceMotion) {
     element.textContent = lines[0];
+    if (onDraw) onDraw(lines[0]);
     finish();
     return;
   }
@@ -50,6 +53,7 @@ function makeTyper(element, lines, timing, cycles) {
     if (!deleting) {
       count += 1;
       element.textContent = line.slice(0, count);
+      if (onDraw) onDraw(line);
       if (count < line.length) {
         setTimeout(step, timing.type);
         return;
@@ -65,6 +69,7 @@ function makeTyper(element, lines, timing, cycles) {
 
     count -= 1;
     element.textContent = line.slice(0, count);
+    if (onDraw) onDraw(line);
     if (count > 0) {
       setTimeout(step, timing.del);
       return;
@@ -87,9 +92,53 @@ function makeTyper(element, lines, timing, cycles) {
 }
 
 
+// ------------------------------------------------------------
+// 首屏大字：长句自动缩到容器宽度内
+//   基准字号来自 CSS 的 clamp()。整句比容器宽时按比例缩小，
+//   同时把行高钉在基准字号上，避免长短句之间出现高度跳动。
+// ------------------------------------------------------------
+const heroWordBox = document.querySelector(".hero-word");
+const heroWordText = document.getElementById("heroWord");
+const heroFitCache = new Map();
+let heroBaseSize = 0;   // 当前视口下 CSS 给的基准字号
+let heroFitLine = "";   // 最近一次渲染的整句，窗口尺寸变化时用来重算
+
+function readHeroBaseSize() {
+  heroWordBox.style.fontSize = "";
+  heroBaseSize = parseFloat(getComputedStyle(heroWordBox).fontSize);
+}
+
+function fitHeroWord(line) {
+  if (!heroWordBox || !heroWordText || !line) return;
+  heroFitLine = line;
+  if (!heroBaseSize) readHeroBaseSize();
+
+  const key = line + "@" + heroWordBox.clientWidth;
+  let size = heroFitCache.get(key);
+  if (size === undefined) {
+    heroWordBox.style.fontSize = "";       // 先回到基准字号再量宽度
+    const keep = heroWordText.textContent;
+    heroWordText.textContent = line;       // 用整句量，同一帧内还原，不会闪
+    const need = heroWordText.scrollWidth;
+    heroWordText.textContent = keep;
+    const have = heroWordBox.clientWidth;
+    size = need > have ? (heroBaseSize * have * 0.97) / need : heroBaseSize;
+    heroFitCache.set(key, size);
+  }
+
+  heroWordBox.style.fontSize = size.toFixed(2) + "px";
+  heroWordBox.style.minHeight = heroBaseSize.toFixed(2) + "px";
+}
+
+window.addEventListener("resize", () => {
+  heroFitCache.clear();
+  readHeroBaseSize();
+  fitHeroWord(heroFitLine);
+});
+
 // 首屏大字 + 副标题（各播 1 轮后停住，不再无限循环）
 makeTyper(document.getElementById("heroWord"), HERO_WORDS,
-  { type: 90, hold: 1600, del: 45, pause: 350 }, 1);
+  { type: 90, hold: 1600, del: 45, pause: 350 }, 1, fitHeroWord);
 makeTyper(document.getElementById("typedText"), TYPED_LINES,
   { type: 110, hold: 1800, del: 40, pause: 420 }, 1);
 
@@ -190,22 +239,8 @@ if (revealItems.length) {
 }
 
 // ------------------------------------------------------------
-// 欢迎弹窗 + 页脚年份
+// 页脚年份
 // ------------------------------------------------------------
-const welcomeModal = document.getElementById("welcomeModal");
-const modalClose = document.getElementById("modalClose");
-
-if (welcomeModal && modalClose) {
-  setTimeout(() => welcomeModal.classList.add("show"), 5000);
-
-  modalClose.addEventListener("click", () => welcomeModal.classList.remove("show"));
-
-  // 点遮罩区域也可以关闭
-  welcomeModal.addEventListener("click", (event) => {
-    if (event.target === welcomeModal) welcomeModal.classList.remove("show");
-  });
-}
-
 const yearEl = document.getElementById("year");
 if (yearEl) {
   yearEl.textContent = new Date().getFullYear();

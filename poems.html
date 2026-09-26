@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Andy.Z 的诗歌档案：沿着时间的折线，读那些年的句子。">
+  <meta name="theme-color" content="#fdfdfd">
+  <title>诗歌 · Andy.Z</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="page-poems">
+  <a class="skip-link mono" href="#poemArchive">跳到诗歌 ↓</a>
+  <header class="navbar">
+    <div class="shell nav-shell">
+      <a href="index.html" class="brand"><span class="brand-name">Andy.Z</span><span class="brand-dot">.</span></a>
+      <nav class="nav-links" id="navLinks" aria-label="页面导航">
+        <a href="index.html#work" class="nav-link">项目</a>
+        <a href="index.html#writing" class="nav-link is-active">文章</a>
+        <a href="index.html#research" class="nav-link">科研</a>
+        <a href="index.html#games" class="nav-link">游戏</a>
+      </nav>
+      <span class="nav-clock mono" id="navClock" aria-hidden="true">LOCAL --:--</span>
+      <button class="nav-toggle" id="navToggle" type="button" aria-label="切换导航菜单" aria-expanded="false" aria-controls="navLinks"><span></span><span></span><span></span></button>
+    </div>
+  </header>
+
+  <main id="poemArchive" class="poems-main">
+    <div class="shell">
+      <a class="poems-back mono" href="index.html#writing">← 返回文章</a>
+      <header class="poems-hero">
+        <div class="poems-hero-copy">
+          <span class="poems-kicker mono">03 / WRITING · POETRY</span>
+          <h1>在时间里<br><em>写诗<span class="brand-dot">。</span></em></h1>
+          <p>从 2016 年开始留下的句子。沿着折线向下走，点开任意一段，读它当时的全文。</p>
+        </div>
+        <div class="poems-hero-mark" aria-hidden="true">
+          <span>字句</span><i></i><span>年月</span><i></i><span>人间</span>
+        </div>
+      </header>
+
+      <div class="poems-toolbar">
+        <div class="poems-tally mono"><strong id="poemCount">—</strong> 首诗 · <span id="yearCount">—</span> 年</div>
+        <nav class="poems-years mono" id="poemYears" aria-label="按年份跳转"></nav>
+      </div>
+
+      <div class="poems-timeline" id="poemTimeline">
+        <svg class="poems-line" id="poemLine" aria-hidden="true" preserveAspectRatio="none"><path></path></svg>
+        <div id="poemList"></div>
+      </div>
+      <noscript><p class="section-empty">诗歌档案需要启用 JavaScript 才能显示。</p></noscript>
+      <div class="poems-end mono"><span>2016 → 现在</span><a href="index.html#writing">返回首页 ↗</a></div>
+    </div>
+  </main>
+
+  <footer class="site-footer poems-footer">
+    <div class="shell footer-shell mono"><span>© <span id="year">2026</span> Andy.Z</span><span>写下来，留在这里。</span><a href="#poemArchive" class="footer-top">回到顶部 ↑</a></div>
+  </footer>
+  <script src="assets/js/poems-data.js"></script>
+  <script src="assets/js/poems-page.js"></script>
+  <script src="assets/js/script.js"></script>
+</body>
+</html>
