@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f5ef">
+  <title>作文背诵 · 一段一段，慢慢记住</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="content.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="masthead">
+    <a class="brand" href="index.html">作文背诵<span> / RECITE</span></a>
+    <span class="quiet">一段一段，慢慢记住。</span>
+  </header>
+  <main>
+    <div class="intro"><span class="eyebrow">ENGLISH WRITING</span><h1>读一遍，再试着背下来。</h1><p>收起英文，看思路或译文回忆；卡住时，只打开那一段。</p></div>
+    <nav id="modules" class="modules" aria-label="内容模块"></nav>
+    <div class="workspace">
+      <aside aria-label="范文目录"><div class="catalog-heading"><span id="module-heading">范文目录</span><span id="count"></span></div><label class="mobile-picker" for="unit-select">选择篇目<select id="unit-select"></select></label><nav id="catalog" aria-label="选择范文"></nav><p class="catalog-note">英文默认展开<br>思路与译文默认收起</p></aside>
+      <section id="empty-module" class="empty-module" hidden><span class="eyebrow">WEEKLY PRACTICE</span><h2>周测卷，留一个位置。</h2><p>还没有收录内容。之后做完周测，再把范文整理到这里。</p></section>
+      <article id="reader" aria-labelledby="essay-title">
+        <header class="essay-head"><span class="eyebrow" id="category"></span><h2 id="essay-title"></h2><p id="source" class="source"></p><p id="content-note" class="source"></p></header>
+        <section class="prompt-section"><h3>题目</h3><p id="prompt"></p><figure id="prompt-figure" hidden><a id="image-link" target="_blank" rel="noopener"><img id="prompt-image" alt="" loading="lazy"></a><figcaption id="image-caption"></figcaption></figure></section>
+        <section class="approach-section"><details id="approach"><summary>思路提示<span class="fold-label"></span></summary><ol id="approach-list"></ol></details></section>
+        <section aria-labelledby="english-heading"><div class="section-heading"><h3 id="english-heading">英文范文</h3><div class="actions"><button type="button" id="expand-all">全部展开</button><button type="button" id="collapse-all">全部收起</button></div></div><p id="recall-note" class="source"></p><div id="paragraphs"></div></section>
+        <section class="translation-section" aria-labelledby="translation-heading"><div class="section-heading"><h3 id="translation-heading">中文翻译</h3><span class="quiet">按需查看</span></div><div id="translations"></div></section>
+        <section id="materials-section" class="materials-section" hidden><h3>值得背的积累</h3><p class="source">精选六条，记住用法，再迁移到下一篇。</p><div id="materials"></div></section>
+        <p class="endnote">背到哪里，就查看哪里。</p>
+      </article>
+    </div>
+    <noscript>请启用浏览器 JavaScript，以加载范文和逐段折叠功能。</noscript>
+  </main>
+  <footer>RECITE / 专注于这一篇</footer>
+</body>
+</html>
